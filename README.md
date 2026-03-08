@@ -244,5 +244,5 @@ __But to be clear, a clever approach to vibe-coding a solution by iteratively wo
 
 Overall we except you to submit a handin as a single `.zip` containing `handin.pdf` and a sequence of code files for the key steps you describe in the handout. 
 
-
-
+## Acknowledgments
+This project utilizes infrastructure from GPU Mode's [Popcorn-CLI](https://github.com/gpu-mode/popcorn-cli) and [kernelbot](https://github.com/gpu-mode/kernelbot). We are grateful to the GPU Mode community for their open-source contributions.
