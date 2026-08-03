@@ -1,0 +1,4 @@
+test-count: 1
+test.0.spec: grid_size: 600; n_steps: 10; seed: 9231
+test.0.status: pass
+check: pass

@@ -1,0 +1,171 @@
+Generating SQLite file ../../results/histogram-baseline-nsys.sqlite from ../../results/histogram-baseline-nsys.nsys-rep
+Processing [../../results/histogram-baseline-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/nvtx_sum.py]... 
+
+ ** NVTX Range Summary (nvtx_sum):
+
+ Time (%)  Total Time (ns)  Instances  Avg (ns)  Med (ns)  Min (ns)  Max (ns)  StdDev (ns)   Style                Range             
+ --------  ---------------  ---------  --------  --------  --------  --------  -----------  -------  -------------------------------
+     55.3           134962          2   67481.0   67481.0     40196     94766      38586.8  PushPop  CCCL:cub::DeviceSelect::Flagged
+     44.7           109096          2   54548.0   54548.0     31882     77214      32054.6  PushPop  CCCL:cub::DeviceReduce::Sum    
+
+Processing [../../results/histogram-baseline-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/osrt_sum.py]... 
+
+ ** OS Runtime Summary (osrt_sum):
+
+ Time (%)  Total Time (ns)  Num Calls    Avg (ns)     Med (ns)    Min (ns)   Max (ns)    StdDev (ns)            Name         
+ --------  ---------------  ---------  ------------  -----------  --------  -----------  ------------  ----------------------
+     33.1      53983897759        362   149126789.4  100121573.0      1008  10603156059   706932931.4  poll                  
+     23.5      38237307924       2420    15800540.5       2729.0      1005  19010908470   474959345.3  read                  
+     23.5      38233390919          9  4248154546.6     565380.0    286382  10602708492  5091106847.4  sem_wait              
+     19.6      32001885342         37   864915820.1      54541.0      7126   4000085125  1669370796.5  pthread_cond_timedwait
+      0.1        142881294       2320       61586.8      46416.5      1788      7505557      217909.5  open64                
+      0.1        136730626          8    17091328.3      13200.0      1269     76414713    31922243.5  waitpid               
+      0.0         66555372       2198       30280.0      28279.5      1027        84621        9119.7  close                 
+      0.0         49362374        725       68086.0       8391.0      1023     14764341      589313.0  ioctl                 
+      0.0         11287586         60      188126.4      51968.0     10294      1234606      275711.6  pthread_rwlock_wrlock 
+      0.0          3593231       1798        1998.5       1384.5      1181        72819        2436.3  munmap                
+      0.0          2458221        404        6084.7       2653.0      1004       952544       47588.8  mmap64                
+      0.0          2059505         34       60573.7      59607.5     55492        74806        3339.0  sleep                 
+      0.0          1876560         49       38297.1      36812.0      1285        78986       14964.4  pthread_rwlock_rdlock 
+      0.0          1294298         57       22707.0       3293.0      1204       687518       98402.3  fopen                 
+      0.0           927565        141        6578.5       5588.0      1246        50664        5406.0  pthread_cond_signal   
+      0.0           701197         11       63745.2      41901.0     28852       298701       78413.0  sem_timedwait         
+      0.0           419333          7       59904.7      56797.0     37089        87353       19146.4  pthread_create        
+      0.0           386457         40        9661.4       7247.0      1022        40634        8508.7  fgets                 
+      0.0           238296         18       13238.7       2947.5      1932       108236       26403.5  fopen64               
+      0.0           202460         31        6531.0       5651.0      1004        20882        4617.1  write                 
+      0.0           156016         22        7091.6       3062.0      1711        42715        8920.0  mmap                  
+      0.0           154812          2       77406.0      77406.0     58719        96093       26427.4  pthread_cond_wait     
+      0.0           118100         18        6561.1       4939.0      2294        22004        5474.9  pipe2                 
+      0.0           117341         28        4190.8       1526.5      1006        35747        8266.7  fclose                
+      0.0            98906          1       98906.0      98906.0     98906        98906           0.0  kill                  
+      0.0            88546          5       17709.2      10049.0      1366        63163       25885.7  pthread_mutex_lock    
+      0.0            67035         12        5586.3       5183.5      1723        13425        3498.9  open                  
+      0.0            54877          4       13719.3      11874.5      6703        24425        7542.4  socket                
+      0.0            23449          4        5862.3       6319.0      1140         9671        3635.8  pthread_cond_broadcast
+      0.0            18923          2        9461.5       9461.5      8159        10764        1842.0  connect               
+      0.0            17993          7        2570.4       2056.0      1119         6211        1653.8  sigaction             
+      0.0            14444          3        4814.7       4500.0      4252         5692         769.8  fread                 
+      0.0             9694          7        1384.9       1271.0      1040         1895         336.3  fcntl                 
+      0.0             6802          3        2267.3       1663.0      1597         3542        1104.4  fwrite                
+      0.0             5124          4        1281.0       1341.0      1042         1400         168.1  fflush                
+      0.0             4535          2        2267.5       2267.5      1490         3045        1099.6  bind                  
+      0.0             1160          1        1160.0       1160.0      1160         1160           0.0  dup2                  
+      0.0             1063          1        1063.0       1063.0      1063         1063           0.0  listen                
+
+Processing [../../results/histogram-baseline-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/cuda_api_sum.py]... 
+
+ ** CUDA API Summary (cuda_api_sum):
+
+ Time (%)  Total Time (ns)  Num Calls  Avg (ns)   Med (ns)   Min (ns)  Max (ns)  StdDev (ns)               Name              
+ --------  ---------------  ---------  ---------  ---------  --------  --------  -----------  -------------------------------
+     51.9       4365650870      99773    43755.8    45462.0      6181   2580214      14867.0  cudaStreamSynchronize          
+     34.3       2886736786     499279     5781.8     5453.0      3979   8651419      25742.2  cudaLaunchKernel               
+      6.7        561519128      99775     5627.9     5397.0      4842    417465       2377.6  cudaMemcpyAsync                
+      4.7        395891731      99771     3968.0     3780.0      3195   1361031       4624.8  cudaMemsetAsync                
+      1.2         98498342     499280      197.3      195.0       124     53702        171.3  cuKernelGetName                
+      1.0         86316246         12  7193020.5  5789163.0   2302924  14548609    4085705.8  cuLibraryLoadData              
+      0.0          4018903        381    10548.3     4017.0      3073    939714      65150.2  cudaEventRecordWithFlags_v11010
+      0.0          1930204        381     5066.2     5298.0      1656     18449       3256.9  cudaDeviceSynchronize          
+      0.0          1914206        380     5037.4     1048.0       449    842665      54052.2  cudaEventDestroy               
+      0.0          1150942        381     3020.8     2442.0      1229     11971       1732.9  cudaEventCreateWithFlags       
+      0.0           961546          5   192309.2   157378.0     95209    300449      85146.1  cudaMalloc                     
+      0.0           868302          3   289434.0    18911.0     17735    831656     469578.4  cudaHostAlloc                  
+      0.0           551933        380     1452.5     1351.5       556      4977        794.0  cudaEventQuery                 
+      0.0           388693        387     1004.4      765.0       493     10660        689.1  cudaStreamIsCapturing_v10000   
+      0.0            37931         21     1806.2     1035.0       553      5212       1595.2  cuLibraryGetKernel             
+      0.0            16347          2     8173.5     8173.5      4416     11931       5313.9  cuModuleGetLoadingMode         
+      0.0             5454          5     1090.8      499.0       346      2585        988.2  cudaStreamGetCaptureInfo_v12030
+      0.0             2609          2     1304.5     1304.5       356      2253       1341.4  cudaGetDeviceProperties_v12000 
+
+Processing [../../results/histogram-baseline-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/cuda_gpu_kern_sum.py]... 
+
+ ** CUDA GPU Kernel Summary (cuda_gpu_kern_sum):
+
+ Time (%)  Total Time (ns)  Instances  Avg (ns)   Med (ns)   Min (ns)  Max (ns)  StdDev (ns)                                                  Name                                                
+ --------  ---------------  ---------  ---------  ---------  --------  --------  -----------  ----------------------------------------------------------------------------------------------------
+     43.5       4433645604      99769    44439.1    44384.0     43104     58176        649.7  void at::native::elementwise_kernel<(int)128, (int)4, void at::native::gpu_kernel_impl_nocast<at::n…
+     42.5       4327525349      99769    43375.5    43296.0     42432     48832        476.6  void at::cuda::kernelHistogram1D<long, unsigned char, long, (int)1, (int)2, (int)-1, (at::cuda::CUD…
+      9.5        966387280      99769     9686.2     9696.0      8960     12768        361.4  void at::native::reduce_kernel<(int)512, (int)1, at::native::ReduceOp<unsigned char, at::native::Mi…
+      2.5        254803732      99768     2554.0     2528.0      2208      3456        109.4  void at::native::unrolled_elementwise_kernel<at::native::direct_copy_kernel_cuda(at::TensorIterator…
+      2.0        200368237      99960     2004.5     1760.0      1632    133920       5685.4  void at::native::vectorized_elementwise_kernel<(int)2, at::native::FillFunctor<long>, std::array<ch…
+      0.0          4856893          2  2428446.5  2428446.5   2162495   2694398     376112.2  void at::native::<unnamed>::distribution_elementwise_grid_stride_kernel<unsigned int, (int)4, void …
+      0.0           425728        195     2183.2     2144.0      2112      3072        101.0  void at::native::vectorized_elementwise_kernel<(int)4, at::native::FillFunctor<int>, std::array<cha…
+      0.0            16576          2     8288.0     8288.0      8128      8448        226.3  void at::native::reduce_kernel<(int)512, (int)1, at::native::ReduceOp<long, at::native::func_wrappe…
+      0.0            15136          8     1892.0     1904.0      1792      2048         94.4  void at::native::vectorized_elementwise_kernel<(int)4, at::native::FillFunctor<bool>, std::array<ch…
+      0.0            14688          6     2448.0     2432.0      2336      2592        115.8  void at::native::vectorized_elementwise_kernel<(int)4, at::native::BinaryFunctor<bool, bool, bool, …
+      0.0            14304          6     2384.0     2400.0      2240      2560        127.6  void at::native::vectorized_elementwise_kernel<(int)4, at::native::BinaryFunctor<bool, bool, bool, …
+      0.0            11040          2     5520.0     5520.0      5504      5536         22.6  void at::native::unrolled_elementwise_kernel<at::native::<unnamed>::CompareFunctor<float>, std::arr…
+      0.0            10656          2     5328.0     5328.0      5056      5600        384.7  void at_cuda_detail::cub::detail::select::DeviceSelectSweepKernel<at_cuda_detail::cub::detail::sele…
+      0.0             9888          4     2472.0     2464.0      2304      2656        146.4  void at::native::vectorized_elementwise_kernel<(int)4, at::native::BinaryFunctor<int, int, bool, at…
+      0.0             9728          4     2432.0     2448.0      2240      2592        145.5  void at::native::vectorized_elementwise_kernel<(int)4, at::native::AbsFunctor<int>, std::array<char…
+      0.0             9024          2     4512.0     4512.0      4448      4576         90.5  void at::native::unrolled_elementwise_kernel<at::native::direct_copy_kernel_cuda(at::TensorIterator…
+      0.0             8864          2     4432.0     4432.0      4384      4480         67.9  void at::native::unrolled_elementwise_kernel<at::native::AUnaryFunctor<float, float, float, at::nat…
+      0.0             6688          2     3344.0     3344.0      3232      3456        158.4  void at::native::vectorized_elementwise_kernel<(int)4, at::native::CUDAFunctor_add<int>, std::array…
+      0.0             5440          2     2720.0     2720.0      2624      2816        135.8  void at_cuda_detail::cub::detail::reduce::DeviceReduceKernel<at_cuda_detail::cub::detail::reduce::p…
+      0.0             5056          2     2528.0     2528.0      2464      2592         90.5  void at::native::vectorized_elementwise_kernel<(int)4, at::native::CUDAFunctorOnSelf_add<float>, st…
+      0.0             4192          2     2096.0     2096.0      2016      2176        113.1  void at_cuda_detail::cub::detail::reduce::DeviceReduceSingleTileKernel<at_cuda_detail::cub::detail:…
+      0.0             2848          2     1424.0     1424.0      1376      1472         67.9  void at_cuda_detail::cub::detail::scan::DeviceCompactInitKernel<at_cuda_detail::cub::ScanTileState<…
+
+Processing [../../results/histogram-baseline-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/cuda_gpu_mem_time_sum.py]... 
+
+ ** CUDA GPU MemOps Summary (by Time) (cuda_gpu_mem_time_sum):
+
+ Time (%)  Total Time (ns)  Count  Avg (ns)  Med (ns)  Min (ns)  Max (ns)  StdDev (ns)            Operation           
+ --------  ---------------  -----  --------  --------  --------  --------  -----------  ------------------------------
+     67.4        222073985  99773    2225.8    2208.0      1280      4160         73.7  [CUDA memcpy Device-to-Host]  
+     32.2        106124497  99771    1063.7    1056.0       992      3264        129.2  [CUDA memset]                 
+      0.4          1211935      2  605967.5  605967.5    603839    608096       3010.2  [CUDA memcpy Device-to-Device]
+
+Processing [../../results/histogram-baseline-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/cuda_gpu_mem_size_sum.py]... 
+
+ ** CUDA GPU MemOps Summary (by Size) (cuda_gpu_mem_size_sum):
+
+ Total (MB)  Count  Avg (MB)  Med (MB)  Min (MB)  Max (MB)  StdDev (MB)            Operation           
+ ----------  -----  --------  --------  --------  --------  -----------  ------------------------------
+   1073.742      2   536.871   536.871   536.871   536.871        0.000  [CUDA memcpy Device-to-Device]
+      0.399  99771     0.000     0.000     0.000     0.000        0.000  [CUDA memset]                 
+      0.100  99773     0.000     0.000     0.000     0.000        0.000  [CUDA memcpy Device-to-Host]  
+
+Processing [../../results/histogram-baseline-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/openmp_sum.py]... 
+SKIPPED: ../../results/histogram-baseline-nsys.sqlite does not contain OpenMP event data.
+
+Processing [../../results/histogram-baseline-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/opengl_khr_range_sum.py]... 
+SKIPPED: ../../results/histogram-baseline-nsys.sqlite does not contain KHR Extension (KHR_DEBUG) data.
+
+Processing [../../results/histogram-baseline-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/opengl_khr_gpu_range_sum.py]... 
+SKIPPED: ../../results/histogram-baseline-nsys.sqlite does not contain GPU KHR Extension (KHR_DEBUG) data.
+
+Processing [../../results/histogram-baseline-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/vulkan_marker_sum.py]... 
+SKIPPED: ../../results/histogram-baseline-nsys.sqlite does not contain Vulkan Debug Extension (Vulkan Debug Util) data.
+
+Processing [../../results/histogram-baseline-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/vulkan_gpu_marker_sum.py]... 
+SKIPPED: ../../results/histogram-baseline-nsys.sqlite does not contain GPU Vulkan Debug Extension (GPU Vulkan Debug markers) data.
+
+Processing [../../results/histogram-baseline-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/dx11_pix_sum.py]... 
+SKIPPED: ../../results/histogram-baseline-nsys.sqlite does not contain DX11 CPU debug markers.
+
+Processing [../../results/histogram-baseline-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/dx12_gpu_marker_sum.py]... 
+SKIPPED: ../../results/histogram-baseline-nsys.sqlite does not contain DX12 GPU debug markers.
+
+Processing [../../results/histogram-baseline-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/dx12_pix_sum.py]... 
+SKIPPED: ../../results/histogram-baseline-nsys.sqlite does not contain DX12 CPU debug markers.
+
+Processing [../../results/histogram-baseline-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/wddm_queue_sum.py]... 
+SKIPPED: ../../results/histogram-baseline-nsys.sqlite does not contain WDDM context data.
+
+Processing [../../results/histogram-baseline-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/um_sum.py]... 
+SKIPPED: ../../results/histogram-baseline-nsys.sqlite does not contain CUDA Unified Memory CPU page faults data.
+
+Processing [../../results/histogram-baseline-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/um_total_sum.py]... 
+SKIPPED: ../../results/histogram-baseline-nsys.sqlite does not contain CUDA Unified Memory CPU page faults data.
+
+Processing [../../results/histogram-baseline-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/um_cpu_page_faults_sum.py]... 
+SKIPPED: ../../results/histogram-baseline-nsys.sqlite does not contain CUDA Unified Memory CPU page faults data.
+
+Processing [../../results/histogram-baseline-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/openacc_sum.py]... 
+SKIPPED: ../../results/histogram-baseline-nsys.sqlite does not contain OpenACC event data.
+
+Processing [../../results/histogram-baseline-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/syscall_sum.py]... 
+SKIPPED: ../../results/histogram-baseline-nsys.sqlite does not contain syscall data.
+

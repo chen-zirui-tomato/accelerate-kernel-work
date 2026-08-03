@@ -1,0 +1,106 @@
+Generating SQLite file ../../results/1d-occupancy-decoder-baseline-nsys.sqlite from ../../results/1d-occupancy-decoder-baseline-nsys.nsys-rep
+Processing [../../results/1d-occupancy-decoder-baseline-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/nvtx_sum.py]... 
+SKIPPED: ../../results/1d-occupancy-decoder-baseline-nsys.sqlite does not contain NV Tools Extension (NVTX) data.
+
+Processing [../../results/1d-occupancy-decoder-baseline-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/osrt_sum.py]... 
+
+ ** OS Runtime Summary (osrt_sum):
+
+ Time (%)  Total Time (ns)  Num Calls    Avg (ns)     Med (ns)    Min (ns)   Max (ns)   StdDev (ns)            Name         
+ --------  ---------------  ---------  ------------  -----------  --------  ----------  ------------  ----------------------
+     32.7      23528296336        161   146138486.6  100116905.0      1056  5616598881   507297622.5  poll                  
+     25.1      18059659978       2465     7326434.1       2760.0      1010  8943831483   223379115.6  read                  
+     25.0      18033085894          9  2003676210.4    1200921.0    269648  5615045636  2501053021.6  sem_wait              
+     16.7      12001357983         27   444494740.1      37301.0      9237  4000074860  1281020149.2  pthread_cond_timedwait
+      0.2        131693856       2329       56545.2      48747.0      1824     2134124       61122.3  open64                
+      0.2        110033116          8    13754139.5      14215.0      1624    89314588    31374134.9  waitpid               
+      0.1         81908548       2203       37180.5      32161.0      1045     8025230      172133.3  close                 
+      0.1         57079254        754       75701.9       8544.0      1007    14648963      660784.3  ioctl                 
+      0.0          3752306       1806        2077.7       1367.0      1138       29255        2230.7  munmap                
+      0.0          2391127        423        5652.8       2567.0      1004      885711       43301.3  mmap64                
+      0.0          2021730         34       59462.6      59545.0     24295       69618        6930.3  sleep                 
+      0.0          1808068         14      129147.7      60440.5     25674      996743      251427.6  pthread_create        
+      0.0           972741         12       81061.8      39263.0     28683      297921       99700.7  sem_timedwait         
+      0.0           368624         40        9215.6       7198.5      1005       40105        8288.9  fgets                 
+      0.0           334036         48        6959.1       4570.5      1044       24215        5843.9  pthread_cond_signal   
+      0.0           293160         57        5143.2       3241.0      1371       28144        5236.8  fopen                 
+      0.0           233862         27        8661.6       5852.0      1237       69873       12744.0  write                 
+      0.0           229045         18       12724.7       2613.5      2268      115171       27334.3  fopen64               
+      0.0           209646          2      104823.0     104823.0     94012      115634       15289.1  pthread_cond_wait     
+      0.0           184624         28        6593.7       3455.5      1728       43955        8587.5  mmap                  
+      0.0           111536         24        4647.3       1824.5      1007       34107        8761.9  fclose                
+      0.0           108141          1      108141.0     108141.0    108141      108141           0.0  kill                  
+      0.0            86009         18        4778.3       4119.0      2501        8153        1685.6  pipe2                 
+      0.0            81145         18        4508.1       4566.0      1409       12726        2943.1  open                  
+      0.0            59932          5       11986.4       9886.0      7095       25108        7454.6  pthread_cond_broadcast
+      0.0            33866          4        8466.5       7983.5      5828       12071        3143.5  socket                
+      0.0            27850          4        6962.5       7628.0      1135       11459        4284.2  pthread_mutex_lock    
+      0.0            20417          2       10208.5      10208.5      9639       10778         805.4  connect               
+      0.0            12262          6        2043.7       2068.0      1013        2885         650.1  sigaction             
+      0.0            11739          3        3913.0       3934.0      3841        3964          64.1  fread                 
+      0.0             7773          3        2591.0       2697.0      1896        3180         648.5  fwrite                
+      0.0             6879          5        1375.8       1276.0      1023        1677         285.9  fcntl                 
+      0.0             2965          2        1482.5       1482.5      1453        1512          41.7  bind                  
+      0.0             2723          2        1361.5       1361.5      1150        1573         299.1  fflush                
+      0.0             1059          1        1059.0       1059.0      1059        1059           0.0  listen                
+
+Processing [../../results/1d-occupancy-decoder-baseline-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/cuda_api_sum.py]... 
+
+ ** CUDA API Summary (cuda_api_sum):
+
+ Time (%)  Total Time (ns)  Num Calls  Avg (ns)  Med (ns)  Min (ns)  Max (ns)  StdDev (ns)               Name             
+ --------  ---------------  ---------  --------  --------  --------  --------  -----------  ------------------------------
+     79.0             7852          2    3926.0    3926.0      3431      4421        700.0  cuModuleGetLoadingMode        
+     21.0             2093          2    1046.5    1046.5       389      1704        929.8  cudaGetDeviceProperties_v12000
+
+Processing [../../results/1d-occupancy-decoder-baseline-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/cuda_gpu_kern_sum.py]... 
+SKIPPED: ../../results/1d-occupancy-decoder-baseline-nsys.sqlite does not contain CUDA kernel data.
+
+Processing [../../results/1d-occupancy-decoder-baseline-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/cuda_gpu_mem_time_sum.py]... 
+SKIPPED: ../../results/1d-occupancy-decoder-baseline-nsys.sqlite does not contain GPU memory data.
+
+Processing [../../results/1d-occupancy-decoder-baseline-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/cuda_gpu_mem_size_sum.py]... 
+SKIPPED: ../../results/1d-occupancy-decoder-baseline-nsys.sqlite does not contain GPU memory data.
+
+Processing [../../results/1d-occupancy-decoder-baseline-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/openmp_sum.py]... 
+SKIPPED: ../../results/1d-occupancy-decoder-baseline-nsys.sqlite does not contain OpenMP event data.
+
+Processing [../../results/1d-occupancy-decoder-baseline-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/opengl_khr_range_sum.py]... 
+SKIPPED: ../../results/1d-occupancy-decoder-baseline-nsys.sqlite does not contain KHR Extension (KHR_DEBUG) data.
+
+Processing [../../results/1d-occupancy-decoder-baseline-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/opengl_khr_gpu_range_sum.py]... 
+SKIPPED: ../../results/1d-occupancy-decoder-baseline-nsys.sqlite does not contain GPU KHR Extension (KHR_DEBUG) data.
+
+Processing [../../results/1d-occupancy-decoder-baseline-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/vulkan_marker_sum.py]... 
+SKIPPED: ../../results/1d-occupancy-decoder-baseline-nsys.sqlite does not contain Vulkan Debug Extension (Vulkan Debug Util) data.
+
+Processing [../../results/1d-occupancy-decoder-baseline-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/vulkan_gpu_marker_sum.py]... 
+SKIPPED: ../../results/1d-occupancy-decoder-baseline-nsys.sqlite does not contain GPU Vulkan Debug Extension (GPU Vulkan Debug markers) data.
+
+Processing [../../results/1d-occupancy-decoder-baseline-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/dx11_pix_sum.py]... 
+SKIPPED: ../../results/1d-occupancy-decoder-baseline-nsys.sqlite does not contain DX11 CPU debug markers.
+
+Processing [../../results/1d-occupancy-decoder-baseline-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/dx12_gpu_marker_sum.py]... 
+SKIPPED: ../../results/1d-occupancy-decoder-baseline-nsys.sqlite does not contain DX12 GPU debug markers.
+
+Processing [../../results/1d-occupancy-decoder-baseline-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/dx12_pix_sum.py]... 
+SKIPPED: ../../results/1d-occupancy-decoder-baseline-nsys.sqlite does not contain DX12 CPU debug markers.
+
+Processing [../../results/1d-occupancy-decoder-baseline-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/wddm_queue_sum.py]... 
+SKIPPED: ../../results/1d-occupancy-decoder-baseline-nsys.sqlite does not contain WDDM context data.
+
+Processing [../../results/1d-occupancy-decoder-baseline-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/um_sum.py]... 
+SKIPPED: ../../results/1d-occupancy-decoder-baseline-nsys.sqlite does not contain CUDA memory transfers data.
+
+Processing [../../results/1d-occupancy-decoder-baseline-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/um_total_sum.py]... 
+SKIPPED: ../../results/1d-occupancy-decoder-baseline-nsys.sqlite does not contain CUDA memory transfers data.
+
+Processing [../../results/1d-occupancy-decoder-baseline-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/um_cpu_page_faults_sum.py]... 
+SKIPPED: ../../results/1d-occupancy-decoder-baseline-nsys.sqlite does not contain CUDA Unified Memory CPU page faults data.
+
+Processing [../../results/1d-occupancy-decoder-baseline-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/openacc_sum.py]... 
+SKIPPED: ../../results/1d-occupancy-decoder-baseline-nsys.sqlite does not contain OpenACC event data.
+
+Processing [../../results/1d-occupancy-decoder-baseline-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/syscall_sum.py]... 
+SKIPPED: ../../results/1d-occupancy-decoder-baseline-nsys.sqlite does not contain syscall data.
+
