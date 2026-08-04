@@ -1,4 +1,0 @@
-test-count: 1
-test.0.spec: batch_size: 1; num_queries: 250000; num_latents: 1024; width: 768; num_heads: 12; q_in_dim: 3; seed: 5531
-test.0.status: pass
-check: pass

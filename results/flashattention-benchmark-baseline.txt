@@ -1,8 +1,0 @@
-benchmark-count: 3
-benchmark.0.spec: batch_size: 1; num_heads: 64; seq_len: 1024; head_dim: 128; seed: 1118
-benchmark.0: runs=16, mean=0.675 ms, std=0.003 ms, err=0.001 ms, best=0.671 ms, worst=0.679 ms
-benchmark.1.spec: batch_size: 2; num_heads: 64; seq_len: 4096; head_dim: 128; seed: 1118
-benchmark.1: runs=3, mean=23.857 ms, std=0.010 ms, err=0.006 ms, best=23.845 ms, worst=23.863 ms
-benchmark.2.spec: batch_size: 4; num_heads: 64; seq_len: 8192; head_dim: 128; seed: 1118
-benchmark.2: runs=4, mean=213.342 ms, std=0.355 ms, err=0.178 ms, best=212.877 ms, worst=213.714 ms
-check: pass

@@ -1,4 +1,0 @@
-benchmark-count: 1
-benchmark.0.spec: length: 1048576; num_channels: 512; num_bins: 256; seed: 1001
-benchmark.0: runs=60, mean=67.894 ms, std=0.522 ms, err=0.067 ms, best=67.116 ms, worst=69.190 ms
-check: pass

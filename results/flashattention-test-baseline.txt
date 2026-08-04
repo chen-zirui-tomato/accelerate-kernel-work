@@ -1,8 +1,0 @@
-test-count: 3
-test.0.spec: batch_size: 1; num_heads: 64; seq_len: 1024; head_dim: 128; seed: 1118
-test.0.status: pass
-test.1.spec: batch_size: 2; num_heads: 64; seq_len: 4096; head_dim: 128; seed: 1118
-test.1.status: pass
-test.2.spec: batch_size: 4; num_heads: 64; seq_len: 8192; head_dim: 128; seed: 1118
-test.2.status: pass
-check: pass

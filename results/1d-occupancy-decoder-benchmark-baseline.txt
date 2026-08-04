@@ -1,4 +1,0 @@
-benchmark-count: 1
-benchmark.0.spec: batch_size: 1; num_queries: 250000; num_latents: 1024; width: 768; num_heads: 12; q_in_dim: 3; seed: 5531
-benchmark.0: runs=100, mean=32.079 ms, std=2.064 ms, err=0.206 ms, best=29.530 ms, worst=39.928 ms
-check: pass
