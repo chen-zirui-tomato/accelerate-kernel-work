@@ -1,0 +1,139 @@
+Generating SQLite file /root/work/accelerate-kernel-work/results/rk4-reference-nsys.sqlite from /root/work/accelerate-kernel-work/results/rk4-reference-nsys.nsys-rep
+Processing [/root/work/accelerate-kernel-work/results/rk4-reference-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/nvtx_sum.py]... 
+SKIPPED: /root/work/accelerate-kernel-work/results/rk4-reference-nsys.sqlite does not contain NV Tools Extension (NVTX) data.
+
+Processing [/root/work/accelerate-kernel-work/results/rk4-reference-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/osrt_sum.py]... 
+
+ ** OS Runtime Summary (osrt_sum):
+
+ Time (%)  Total Time (ns)  Num Calls    Avg (ns)      Med (ns)     Min (ns)    Max (ns)   StdDev (ns)           Name         
+ --------  ---------------  ---------  ------------  ------------  ----------  ----------  -----------  ----------------------
+     66.6       8542691793         97    88068987.6   100126563.0        2274   231954392   36240724.8  poll                  
+     31.2       4000041900          1  4000041900.0  4000041900.0  4000041900  4000041900          0.0  pthread_cond_timedwait
+      1.1        138645549       2076       66784.9       57520.0        1853     6859297     161257.7  open64                
+      0.5         61355984       1943       31578.0       25734.0        1009     5131081     119060.7  close                 
+      0.4         57065812        589       96885.9       11626.0        1109    16256198     794148.9  ioctl                 
+      0.2         19976953       2123        9409.8        3249.0        1002     1001716      27605.1  read                  
+      0.1          9069191       4934        1838.1        1369.0        1178       37312       1650.0  munmap                
+      0.0          3461190        685        5052.8        2270.0        1000      987554      38621.5  mmap64                
+      0.0          1241676         12      103473.0       45242.5       19467      422634     131071.3  sem_timedwait         
+      0.0          1000108         17       58829.9       59446.0       35025       64548       6571.4  sleep                 
+      0.0           304332         15       20288.8       12574.0        4438       96571      24952.9  write                 
+      0.0           242877          3       80959.0       77153.0       75646       90078       7933.2  pthread_create        
+      0.0           221035         32        6907.3        4287.5        1676       53972       9614.8  mmap                  
+      0.0           178285         19        9383.4        7145.0        1057       37013       7717.0  fgets                 
+      0.0           165304         29        5700.1        3593.0        1418       25925       5642.0  fopen                 
+      0.0           157683         14       11263.1        9262.0        1466       27019       7670.6  pthread_cond_signal   
+      0.0           119317          7       17045.3        3472.0        2176       91017      32836.6  fopen64               
+      0.0           106152          1      106152.0      106152.0      106152      106152          0.0  pthread_cond_wait     
+      0.0            53923         13        4147.9        1968.0        1137       26586       6831.8  fclose                
+      0.0            28220          6        4703.3        4806.5        1350        8466       2839.3  open                  
+      0.0            26912          6        4485.3        4446.5        2334        6620       1813.0  pipe2                 
+      0.0            26309          2       13154.5       13154.5       11497       14812       2344.1  socket                
+      0.0            17976          1       17976.0       17976.0       17976       17976          0.0  waitpid               
+      0.0            10393          1       10393.0       10393.0       10393       10393          0.0  connect               
+      0.0             9278          1        9278.0        9278.0        9278        9278          0.0  pthread_cond_broadcast
+      0.0             6953          2        3476.5        3476.5        3042        3911        614.5  fread                 
+      0.0             6514          5        1302.8        1340.0        1023        1575        269.5  fcntl                 
+      0.0             5783          2        2891.5        2891.5        1974        3809       1297.5  fwrite                
+      0.0             4489          2        2244.5        2244.5        1696        2793        775.7  sigaction             
+      0.0             3719          1        3719.0        3719.0        3719        3719          0.0  bind                  
+      0.0             1252          1        1252.0        1252.0        1252        1252          0.0  fflush                
+      0.0             1188          1        1188.0        1188.0        1188        1188          0.0  listen                
+
+Processing [/root/work/accelerate-kernel-work/results/rk4-reference-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/cuda_api_sum.py]... 
+
+ ** CUDA API Summary (cuda_api_sum):
+
+ Time (%)  Total Time (ns)  Num Calls   Avg (ns)     Med (ns)    Min (ns)   Max (ns)   StdDev (ns)               Name              
+ --------  ---------------  ---------  -----------  -----------  --------  ----------  -----------  -------------------------------
+     48.0       1156895381       2034     568778.5       8451.5      3882   170699296    4002942.0  cudaLaunchKernel               
+     47.8       1151037028          2  575518514.0  575518514.0    856832  1150180196  812694344.5  cudaDeviceSynchronize          
+      2.5         59766718         81     737860.7      20272.0      8016     2324534     900435.1  cudaMemcpyAsync                
+      1.6         38196973          8    4774621.6    5643785.0    909398     9257576    2991589.6  cuLibraryLoadData              
+      0.1          3491657         18     193980.9     146551.5    122013      487601     100586.0  cudaMalloc                     
+      0.0           537644       2034        264.3        220.0       133       11211        357.5  cuKernelGetName                
+      0.0            31787         18       1765.9        942.0       685        7797       1877.0  cudaStreamIsCapturing_v10000   
+      0.0            24321         13       1870.8       1330.0       634        4532       1433.1  cuLibraryGetKernel             
+      0.0            14205         10       1420.5       1263.5       369        3915       1098.4  cudaStreamGetCaptureInfo_v12030
+      0.0             5358          1       5358.0       5358.0      5358        5358          0.0  cuModuleGetLoadingMode         
+      0.0             2778          2       1389.0       1389.0       871        1907        732.6  cudaGetDeviceProperties_v12000 
+
+Processing [/root/work/accelerate-kernel-work/results/rk4-reference-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/cuda_gpu_kern_sum.py]... 
+
+ ** CUDA GPU Kernel Summary (cuda_gpu_kern_sum):
+
+ Time (%)  Total Time (ns)  Instances  Avg (ns)   Med (ns)   Min (ns)  Max (ns)  StdDev (ns)                                                  Name                                                
+ --------  ---------------  ---------  ---------  ---------  --------  --------  -----------  ----------------------------------------------------------------------------------------------------
+     35.3        818580212        592  1382736.8  1389151.0      2048   1393183      80690.9  void at::native::vectorized_elementwise_kernel<(int)4, at::native::CUDAFunctor_add<float>, std::arr…
+     27.3        634855129        520  1220875.2  1152378.0   1119961   1547075     139756.5  void at::native::elementwise_kernel<(int)128, (int)2, void at::native::gpu_kernel_impl_nocast<at::n…
+     20.3        472299043        528   894505.8   944309.0      1920    953173     211391.2  void at::native::vectorized_elementwise_kernel<(int)4, at::native::AUnaryFunctor<float, float, floa…
+      9.1        211377283        200  1056886.4  1050215.5   1038264   1142169      24254.2  void at::native::elementwise_kernel<(int)128, (int)2, void at::native::gpu_kernel_impl_nocast<at::n…
+      5.8        135171180        120  1126426.5  1114665.0   1105081   1250236      37509.0  void at::native::elementwise_kernel<(int)128, (int)2, void at::native::gpu_kernel_impl_nocast<at::n…
+      1.9         44978324         40  1124458.1  1116217.0   1109241   1239932      31232.0  void at::native::elementwise_kernel<(int)128, (int)2, void at::native::gpu_kernel_impl_nocast<at::n…
+      0.1          3184841          7   454977.3   451563.0    437738    489867      18824.8  void at::native::vectorized_elementwise_kernel<(int)4, at::native::FillFunctor<float>, std::array<c…
+      0.0          1071640          1  1071640.0  1071640.0   1071640   1071640          0.0  void at::native::<unnamed>::distribution_elementwise_grid_stride_kernel<float, (int)4, void at::nat…
+      0.0            20992         10     2099.2     2112.0      2016      2240         82.9  void at::native::vectorized_elementwise_kernel<(int)4, at::native::BUnaryFunctor<float, float, floa…
+      0.0            10657          4     2664.3     2576.5      2528      2976        209.5  void at::native::<unnamed>::distribution_elementwise_grid_stride_kernel<float, (int)4, void at::nat…
+      0.0             9568          4     2392.0     2176.0      2080      3136        498.7  void at::native::vectorized_elementwise_kernel<(int)4, at::native::BinaryFunctor<float, float, floa…
+      0.0             9184          4     2296.0     2256.0      2208      2464        115.0  void at::native::vectorized_elementwise_kernel<(int)4, at::native::reciprocal_kernel_cuda(at::Tenso…
+      0.0             8352          4     2088.0     2096.0      2048      2112         30.6  void at::native::vectorized_elementwise_kernel<(int)4, at::native::CUDAFunctorOnSelf_add<float>, st…
+
+Processing [/root/work/accelerate-kernel-work/results/rk4-reference-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/cuda_gpu_mem_time_sum.py]... 
+
+ ** CUDA GPU MemOps Summary (by Time) (cuda_gpu_mem_time_sum):
+
+ Time (%)  Total Time (ns)  Count  Avg (ns)  Med (ns)  Min (ns)  Max (ns)  StdDev (ns)            Operation           
+ --------  ---------------  -----  --------  --------  --------  --------  -----------  ------------------------------
+    100.0         78185319     81  965250.9  978966.0    937557    994262      22616.6  [CUDA memcpy Device-to-Device]
+
+Processing [/root/work/accelerate-kernel-work/results/rk4-reference-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/cuda_gpu_mem_size_sum.py]... 
+
+ ** CUDA GPU MemOps Summary (by Size) (cuda_gpu_mem_size_sum):
+
+ Total (MB)  Count  Avg (MB)  Med (MB)  Min (MB)  Max (MB)  StdDev (MB)            Operation           
+ ----------  -----  --------  --------  --------  --------  -----------  ------------------------------
+  68619.950     81   847.160   864.000   829.899   864.000       17.156  [CUDA memcpy Device-to-Device]
+
+Processing [/root/work/accelerate-kernel-work/results/rk4-reference-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/openmp_sum.py]... 
+SKIPPED: /root/work/accelerate-kernel-work/results/rk4-reference-nsys.sqlite does not contain OpenMP event data.
+
+Processing [/root/work/accelerate-kernel-work/results/rk4-reference-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/opengl_khr_range_sum.py]... 
+SKIPPED: /root/work/accelerate-kernel-work/results/rk4-reference-nsys.sqlite does not contain KHR Extension (KHR_DEBUG) data.
+
+Processing [/root/work/accelerate-kernel-work/results/rk4-reference-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/opengl_khr_gpu_range_sum.py]... 
+SKIPPED: /root/work/accelerate-kernel-work/results/rk4-reference-nsys.sqlite does not contain GPU KHR Extension (KHR_DEBUG) data.
+
+Processing [/root/work/accelerate-kernel-work/results/rk4-reference-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/vulkan_marker_sum.py]... 
+SKIPPED: /root/work/accelerate-kernel-work/results/rk4-reference-nsys.sqlite does not contain Vulkan Debug Extension (Vulkan Debug Util) data.
+
+Processing [/root/work/accelerate-kernel-work/results/rk4-reference-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/vulkan_gpu_marker_sum.py]... 
+SKIPPED: /root/work/accelerate-kernel-work/results/rk4-reference-nsys.sqlite does not contain GPU Vulkan Debug Extension (GPU Vulkan Debug markers) data.
+
+Processing [/root/work/accelerate-kernel-work/results/rk4-reference-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/dx11_pix_sum.py]... 
+SKIPPED: /root/work/accelerate-kernel-work/results/rk4-reference-nsys.sqlite does not contain DX11 CPU debug markers.
+
+Processing [/root/work/accelerate-kernel-work/results/rk4-reference-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/dx12_gpu_marker_sum.py]... 
+SKIPPED: /root/work/accelerate-kernel-work/results/rk4-reference-nsys.sqlite does not contain DX12 GPU debug markers.
+
+Processing [/root/work/accelerate-kernel-work/results/rk4-reference-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/dx12_pix_sum.py]... 
+SKIPPED: /root/work/accelerate-kernel-work/results/rk4-reference-nsys.sqlite does not contain DX12 CPU debug markers.
+
+Processing [/root/work/accelerate-kernel-work/results/rk4-reference-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/wddm_queue_sum.py]... 
+SKIPPED: /root/work/accelerate-kernel-work/results/rk4-reference-nsys.sqlite does not contain WDDM context data.
+
+Processing [/root/work/accelerate-kernel-work/results/rk4-reference-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/um_sum.py]... 
+SKIPPED: /root/work/accelerate-kernel-work/results/rk4-reference-nsys.sqlite does not contain CUDA Unified Memory CPU page faults data.
+
+Processing [/root/work/accelerate-kernel-work/results/rk4-reference-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/um_total_sum.py]... 
+SKIPPED: /root/work/accelerate-kernel-work/results/rk4-reference-nsys.sqlite does not contain CUDA Unified Memory CPU page faults data.
+
+Processing [/root/work/accelerate-kernel-work/results/rk4-reference-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/um_cpu_page_faults_sum.py]... 
+SKIPPED: /root/work/accelerate-kernel-work/results/rk4-reference-nsys.sqlite does not contain CUDA Unified Memory CPU page faults data.
+
+Processing [/root/work/accelerate-kernel-work/results/rk4-reference-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/openacc_sum.py]... 
+SKIPPED: /root/work/accelerate-kernel-work/results/rk4-reference-nsys.sqlite does not contain OpenACC event data.
+
+Processing [/root/work/accelerate-kernel-work/results/rk4-reference-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/syscall_sum.py]... 
+SKIPPED: /root/work/accelerate-kernel-work/results/rk4-reference-nsys.sqlite does not contain syscall data.
+

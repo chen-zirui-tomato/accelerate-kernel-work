@@ -1,0 +1,4 @@
+benchmark-count: 1
+benchmark.0.spec: batch_size: 256; in_features: 2048; hidden_size: 4096; seed: 8846; seq: 64
+benchmark.0: runs=3, mean=31.027 ms, std=0.045 ms, err=0.026 ms, best=30.998 ms, worst=31.078 ms
+check: pass
