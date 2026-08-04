@@ -1,0 +1,148 @@
+Generating SQLite file ../../results/1d-occupancy-decoder-oneshot-nsys.sqlite from ../../results/1d-occupancy-decoder-oneshot-nsys.nsys-rep
+Processing [../../results/1d-occupancy-decoder-oneshot-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/nvtx_sum.py]... 
+
+ ** NVTX Range Summary (nvtx_sum):
+
+ Time (%)  Total Time (ns)  Instances  Avg (ns)   Med (ns)   Min (ns)  Max (ns)  StdDev (ns)   Style           Range         
+ --------  ---------------  ---------  ---------  ---------  --------  --------  -----------  -------  ----------------------
+    100.0          2283217          1  2283217.0  2283217.0   2283217   2283217          0.0  PushPop  cuBLAS:cublasCreate_v2
+
+Processing [../../results/1d-occupancy-decoder-oneshot-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/osrt_sum.py]... 
+
+ ** OS Runtime Summary (osrt_sum):
+
+ Time (%)  Total Time (ns)  Num Calls   Avg (ns)    Med (ns)   Min (ns)  Max (ns)   StdDev (ns)           Name         
+ --------  ---------------  ---------  ----------  ----------  --------  ---------  -----------  ----------------------
+     91.1       1840511831         30  61350394.4  75726643.5      1677  238019168   56433495.8  poll                  
+      3.7         74849887       1147     65257.1     62678.0      1794     339821      30350.8  open64                
+      2.3         46887840        576     81402.5      8461.0      1288   14088603     650577.2  ioctl                 
+      1.5         31065392       1061     29279.4     26720.0      1064     508031      17184.4  close                 
+      1.0         20298624       1199     16929.6      3026.0      1011    3679349     141029.5  read                  
+      0.1          1668895        169      9875.1      3652.0      1052     830894      64060.0  mmap64                
+      0.1          1096711        521      2105.0      1357.0      1149      11310       1698.5  munmap                
+      0.1          1012985         17     59587.4     59599.0     56815      62350       1618.7  sleep                 
+      0.0           948551         12     79045.9     27464.0     19125     317529     100957.0  sem_timedwait         
+      0.0           641412         10     64141.2     57689.0     28743     111650      24703.4  pthread_create        
+      0.0           272246         13     20942.0      7019.0      3431     183581      48949.2  write                 
+      0.0           191176         22      8689.8      7037.5      1026      36626       7605.4  fgets                 
+      0.0           165996         24      6916.5      4747.5      1528      44614       8771.9  mmap                  
+      0.0           144983         29      4999.4      3579.0      1453      20638       4442.4  fopen                 
+      0.0           131947          6     21991.2      3169.0      2057     106008      41466.0  fopen64               
+      0.0           120864         11     10987.6     14670.0      1337      25761       7615.9  pthread_cond_signal   
+      0.0            74387          1     74387.0     74387.0     74387      74387          0.0  pthread_cond_wait     
+      0.0            52948         14      3782.0      1767.5      1003      29284       7388.5  fclose                
+      0.0            49633         12      4136.1      3513.5      1318      13710       3423.5  open                  
+      0.0            29225          1     29225.0     29225.0     29225      29225          0.0  waitpid               
+      0.0            24784          6      4130.7      3726.5      2115       6669       1942.7  pipe2                 
+      0.0            18049          2      9024.5      9024.5      1234      16815      11017.4  sigaction             
+      0.0            15813          2      7906.5      7906.5      5250      10563       3756.9  socket                
+      0.0             9108          1      9108.0      9108.0      9108       9108          0.0  connect               
+      0.0             6396          1      6396.0      6396.0      6396       6396          0.0  pthread_cond_broadcast
+      0.0             5578          2      2789.0      2789.0      1850       3728       1327.9  fwrite                
+      0.0             3831          1      3831.0      3831.0      3831       3831          0.0  fread                 
+      0.0             2210          1      2210.0      2210.0      2210       2210          0.0  bind                  
+      0.0             1104          1      1104.0      1104.0      1104       1104          0.0  fcntl                 
+      0.0             1027          1      1027.0      1027.0      1027       1027          0.0  fflush                
+
+Processing [../../results/1d-occupancy-decoder-oneshot-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/cuda_api_sum.py]... 
+
+ ** CUDA API Summary (cuda_api_sum):
+
+ Time (%)  Total Time (ns)  Num Calls  Avg (ns)   Med (ns)   Min (ns)  Max (ns)  StdDev (ns)                   Name                  
+ --------  ---------------  ---------  ---------  ---------  --------  --------  -----------  ---------------------------------------
+     79.7         98847477         18  5491526.5  3647057.5    992034  30689048    7243848.2  cuLibraryLoadData                      
+     13.4         16669335         15  1111289.0    34316.0      7285   7883898    2371542.3  cudaLaunchKernel                       
+      2.6          3229535         20   161476.8     1931.0       584   1244502     391804.5  cuLibraryGetKernel                     
+      1.9          2321154         12   193429.5   183286.0      4556    362262     107933.1  cudaMalloc                             
+      1.4          1765129         56    31520.2     9302.0      4374    172775      44415.2  cudaMemcpyAsync                        
+      0.6           778649         28    27808.9     9229.5      4215     71930      26054.6  cudaStreamSynchronize                  
+      0.2           197642        880      224.6      180.0       112      2875        142.6  cuGetProcAddress_v2                    
+      0.1            81044         37     2190.4     1709.0       497      7184       1799.0  cudaStreamIsCapturing_v10000           
+      0.1            77220          2    38610.0    38610.0     11903     65317      37769.4  cudaDeviceSynchronize                  
+      0.0            21123          1    21123.0    21123.0     21123     21123          0.0  cudaFree                               
+      0.0            12637         18      702.1      512.0       429      2637        537.9  cudaEventCreateWithFlags               
+      0.0            10049         15      669.9      571.0       244      1393        334.1  cuKernelGetName                        
+      0.0             6200          4     1550.0     1535.5       663      2466        768.7  cuInit                                 
+      0.0             5987          5     1197.4      639.0       304      2489       1060.3  cudaStreamGetCaptureInfo_v12030        
+      0.0             4010          3     1336.7      263.0       120      3627       1984.8  cuModuleGetLoadingMode                 
+      0.0             3092          3     1030.7      601.0       533      1958        803.8  cudaGetDriverEntryPointByVersion_v12050
+      0.0             1970          2      985.0      985.0       569      1401        588.3  cudaGetDeviceProperties_v12000         
+
+Processing [../../results/1d-occupancy-decoder-oneshot-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/cuda_gpu_kern_sum.py]... 
+
+ ** CUDA GPU Kernel Summary (cuda_gpu_kern_sum):
+
+ Time (%)  Total Time (ns)  Instances  Avg (ns)   Med (ns)   Min (ns)  Max (ns)  StdDev (ns)                                                  Name                                                
+ --------  ---------------  ---------  ---------  ---------  --------  --------  -----------  ----------------------------------------------------------------------------------------------------
+     36.5          5868449          1  5868449.0  5868449.0   5868449   5868449          0.0  void pytorch_flash::flash_fwd_kernel<Flash_fwd_kernel_traits<(int)64, (int)128, (int)128, (int)4, (…
+     27.6          4437352          3  1479117.3  1478296.0   1478200   1480856       1506.5  ampere_fp16_s16816gemm_fp16_128x128_ldg8_relu_f2f_stages_32x5_tn                                    
+     12.1          1943573          1  1943573.0  1943573.0   1943573   1943573          0.0  ampere_fp16_sgemm_fp16_128x64_tn                                                                    
+      8.2          1316953          1  1316953.0  1316953.0   1316953   1316953          0.0  void at::native::<unnamed>::vectorized_layer_norm_kernel<float, float, (bool)0>(int, T2, const T1 *…
+      7.0          1121081          1  1121081.0  1121081.0   1121081   1121081          0.0  void at::native::unrolled_elementwise_kernel<at::native::direct_copy_kernel_cuda(at::TensorIterator…
+      4.0           637308          1   637308.0   637308.0    637308    637308          0.0  void at::native::vectorized_elementwise_kernel<(int)4, at::native::float16_copy_kernel_cuda(at::Ten…
+      2.9           474589          1   474589.0   474589.0    474589    474589          0.0  void at::native::vectorized_elementwise_kernel<(int)4, at::native::<unnamed>::silu_kernel(at::Tenso…
+      1.4           232799          1   232799.0   232799.0    232799    232799          0.0  ampere_fp16_s16816gemm_fp16_64x64_ldg8_f2f_stages_64x5_tn                                           
+      0.2            31296          2    15648.0    15648.0     15200     16096        633.6  ampere_fp16_s16816gemm_fp16_128x64_ldg8_relu_f2f_stages_32x6_tn                                     
+      0.1            20416          2    10208.0    10208.0     10112     10304        135.8  void at::native::<unnamed>::distribution_elementwise_grid_stride_kernel<float, (int)4, void at::nat…
+      0.0             4544          1     4544.0     4544.0      4544      4544          0.0  void at::native::elementwise_kernel<(int)128, (int)4, void at::native::gpu_kernel_impl_nocast<at::n…
+
+Processing [../../results/1d-occupancy-decoder-oneshot-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/cuda_gpu_mem_time_sum.py]... 
+
+ ** CUDA GPU MemOps Summary (by Time) (cuda_gpu_mem_time_sum):
+
+ Time (%)  Total Time (ns)  Count  Avg (ns)  Med (ns)  Min (ns)  Max (ns)  StdDev (ns)            Operation           
+ --------  ---------------  -----  --------  --------  --------  --------  -----------  ------------------------------
+     90.8           740829     28   26458.2    1488.0      1248     80608      34295.9  [CUDA memcpy Host-to-Device]  
+      9.2            74784     28    2670.9    2432.0      2144      3648        521.9  [CUDA memcpy Device-to-Device]
+
+Processing [../../results/1d-occupancy-decoder-oneshot-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/cuda_gpu_mem_size_sum.py]... 
+
+ ** CUDA GPU MemOps Summary (by Size) (cuda_gpu_mem_size_sum):
+
+ Total (MB)  Count  Avg (MB)  Med (MB)  Min (MB)  Max (MB)  StdDev (MB)            Operation           
+ ----------  -----  --------  --------  --------  --------  -----------  ------------------------------
+     11.827     28     0.422     0.002     0.000     1.180        0.575  [CUDA memcpy Device-to-Device]
+     11.827     28     0.422     0.002     0.000     1.180        0.575  [CUDA memcpy Host-to-Device]  
+
+Processing [../../results/1d-occupancy-decoder-oneshot-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/openmp_sum.py]... 
+SKIPPED: ../../results/1d-occupancy-decoder-oneshot-nsys.sqlite does not contain OpenMP event data.
+
+Processing [../../results/1d-occupancy-decoder-oneshot-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/opengl_khr_range_sum.py]... 
+SKIPPED: ../../results/1d-occupancy-decoder-oneshot-nsys.sqlite does not contain KHR Extension (KHR_DEBUG) data.
+
+Processing [../../results/1d-occupancy-decoder-oneshot-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/opengl_khr_gpu_range_sum.py]... 
+SKIPPED: ../../results/1d-occupancy-decoder-oneshot-nsys.sqlite does not contain GPU KHR Extension (KHR_DEBUG) data.
+
+Processing [../../results/1d-occupancy-decoder-oneshot-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/vulkan_marker_sum.py]... 
+SKIPPED: ../../results/1d-occupancy-decoder-oneshot-nsys.sqlite does not contain Vulkan Debug Extension (Vulkan Debug Util) data.
+
+Processing [../../results/1d-occupancy-decoder-oneshot-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/vulkan_gpu_marker_sum.py]... 
+SKIPPED: ../../results/1d-occupancy-decoder-oneshot-nsys.sqlite does not contain GPU Vulkan Debug Extension (GPU Vulkan Debug markers) data.
+
+Processing [../../results/1d-occupancy-decoder-oneshot-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/dx11_pix_sum.py]... 
+SKIPPED: ../../results/1d-occupancy-decoder-oneshot-nsys.sqlite does not contain DX11 CPU debug markers.
+
+Processing [../../results/1d-occupancy-decoder-oneshot-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/dx12_gpu_marker_sum.py]... 
+SKIPPED: ../../results/1d-occupancy-decoder-oneshot-nsys.sqlite does not contain DX12 GPU debug markers.
+
+Processing [../../results/1d-occupancy-decoder-oneshot-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/dx12_pix_sum.py]... 
+SKIPPED: ../../results/1d-occupancy-decoder-oneshot-nsys.sqlite does not contain DX12 CPU debug markers.
+
+Processing [../../results/1d-occupancy-decoder-oneshot-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/wddm_queue_sum.py]... 
+SKIPPED: ../../results/1d-occupancy-decoder-oneshot-nsys.sqlite does not contain WDDM context data.
+
+Processing [../../results/1d-occupancy-decoder-oneshot-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/um_sum.py]... 
+SKIPPED: ../../results/1d-occupancy-decoder-oneshot-nsys.sqlite does not contain CUDA Unified Memory CPU page faults data.
+
+Processing [../../results/1d-occupancy-decoder-oneshot-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/um_total_sum.py]... 
+SKIPPED: ../../results/1d-occupancy-decoder-oneshot-nsys.sqlite does not contain CUDA Unified Memory CPU page faults data.
+
+Processing [../../results/1d-occupancy-decoder-oneshot-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/um_cpu_page_faults_sum.py]... 
+SKIPPED: ../../results/1d-occupancy-decoder-oneshot-nsys.sqlite does not contain CUDA Unified Memory CPU page faults data.
+
+Processing [../../results/1d-occupancy-decoder-oneshot-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/openacc_sum.py]... 
+SKIPPED: ../../results/1d-occupancy-decoder-oneshot-nsys.sqlite does not contain OpenACC event data.
+
+Processing [../../results/1d-occupancy-decoder-oneshot-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/syscall_sum.py]... 
+SKIPPED: ../../results/1d-occupancy-decoder-oneshot-nsys.sqlite does not contain syscall data.
+
