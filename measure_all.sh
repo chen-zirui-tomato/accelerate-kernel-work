@@ -5,27 +5,54 @@ set -euo pipefail
 # assignment problems. Run this script from the repository root.
 #
 # Usage:
-#   ./measure_all.sh reference    # only reference.py
-#   ./measure_all.sh submission   # only submission.py
-#   ./measure_all.sh both         # default
+#   ./measure_all.sh reference --problemname swiglu
+#   ./measure_all.sh submission --problemname swiglu
+#   ./measure_all.sh both
 #
-# Outputs go to results/, using names like:
-#   swiglu-reference-benchmark.txt
-#   swiglu-reference-nsys-stats.txt
-#   swiglu-submission-test.txt
-#   swiglu-submission-benchmark.txt
-#   swiglu-submission-nsys-stats.txt
+# Outputs go to each problem's own results/ directory, using names like:
+#   problems/swiglu/results/reference-benchmark.txt
+#   problems/swiglu/results/reference-nsys-stats.txt
+#   problems/swiglu/results/submission-test.txt
+#   problems/swiglu/results/submission-benchmark.txt
+#   problems/swiglu/results/submission-nsys-stats.txt
 
 MODE="${1:-both}"
+PROBLEM_NAME=""
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    reference|submission|both)
+      MODE="$1"
+      shift
+      ;;
+    --problemname)
+      PROBLEM_NAME="${2:-}"
+      if [[ -z "$PROBLEM_NAME" ]]; then
+        echo "--problemname requires a value" >&2
+        exit 2
+      fi
+      shift 2
+      ;;
+    -h|--help)
+      echo "Usage: $0 [reference|submission|both] [--problemname NAME]" >&2
+      exit 0
+      ;;
+    *)
+      echo "Unknown argument: $1" >&2
+      echo "Usage: $0 [reference|submission|both] [--problemname NAME]" >&2
+      exit 2
+      ;;
+  esac
+done
+
 if [[ "$MODE" != "reference" && "$MODE" != "submission" && "$MODE" != "both" ]]; then
-  echo "Usage: $0 [reference|submission|both]" >&2
+  echo "Usage: $0 [reference|submission|both] [--problemname NAME]" >&2
   exit 2
 fi
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-RESULTS="$ROOT/results"
 RUNNER="${TMPDIR:-/tmp}/asst5_measure_runner.py"
-PROBLEMS=(
+ALL_PROBLEMS=(
   "histogram"
   "rk4"
   "1d-occupancy-decoder"
@@ -33,7 +60,11 @@ PROBLEMS=(
   "swiglu"
 )
 
-mkdir -p "$RESULTS"
+if [[ -n "$PROBLEM_NAME" ]]; then
+  PROBLEMS=("$PROBLEM_NAME")
+else
+  PROBLEMS=("${ALL_PROBLEMS[@]}")
+fi
 
 cat > "$RUNNER" <<'PY'
 import dataclasses
@@ -224,11 +255,13 @@ PY
 
 run_reference() {
   local problem="$1"
+  local results_dir="$ROOT/problems/$problem/results"
+  mkdir -p "$results_dir"
   echo "==== $problem reference benchmark ===="
   (
     cd "$ROOT/problems/$problem"
     PYTHONPATH="$PWD:$PWD/.." python "$RUNNER" benchmark reference \
-      | tee "$RESULTS/$problem-reference-benchmark.txt"
+      | tee "$results_dir/reference-benchmark.txt"
   )
 
   echo "==== $problem reference nsys ===="
@@ -238,16 +271,18 @@ run_reference() {
       --trace=cuda,cublas,nvtx,osrt \
       --stats=true \
       --force-overwrite true \
-      -o "$RESULTS/$problem-reference-nsys" \
+      -o "$results_dir/reference-nsys" \
       python "$RUNNER" profile reference
 
-    nsys stats --force-export=true "$RESULTS/$problem-reference-nsys.nsys-rep" \
-      | tee "$RESULTS/$problem-reference-nsys-stats.txt"
+    nsys stats --force-export=true "$results_dir/reference-nsys.nsys-rep" \
+      | tee "$results_dir/reference-nsys-stats.txt"
   )
 }
 
 run_submission() {
   local problem="$1"
+  local results_dir="$ROOT/problems/$problem/results"
+  mkdir -p "$results_dir"
   if [[ ! -f "$ROOT/problems/$problem/submission.py" ]]; then
     echo "==== $problem submission skipped: submission.py not found ===="
     return 0
@@ -257,14 +292,14 @@ run_submission() {
   (
     cd "$ROOT/problems/$problem"
     PYTHONPATH="$PWD:$PWD/.." python ../eval.py test test_cases/test.txt \
-      | tee "$RESULTS/$problem-submission-test.txt"
+      | tee "$results_dir/submission-test.txt"
   )
 
   echo "==== $problem submission benchmark ===="
   (
     cd "$ROOT/problems/$problem"
     PYTHONPATH="$PWD:$PWD/.." python "$RUNNER" benchmark submission \
-      | tee "$RESULTS/$problem-submission-benchmark.txt"
+      | tee "$results_dir/submission-benchmark.txt"
   )
 
   echo "==== $problem submission nsys ===="
@@ -274,11 +309,11 @@ run_submission() {
       --trace=cuda,cublas,nvtx,osrt \
       --stats=true \
       --force-overwrite true \
-      -o "$RESULTS/$problem-submission-nsys" \
+      -o "$results_dir/submission-nsys" \
       python "$RUNNER" profile submission
 
-    nsys stats --force-export=true "$RESULTS/$problem-submission-nsys.nsys-rep" \
-      | tee "$RESULTS/$problem-submission-nsys-stats.txt"
+    nsys stats --force-export=true "$results_dir/submission-nsys.nsys-rep" \
+      | tee "$results_dir/submission-nsys-stats.txt"
   )
 }
 
@@ -292,4 +327,4 @@ for problem in "${PROBLEMS[@]}"; do
   fi
 done
 
-echo "All requested measurements are in $RESULTS"
+echo "All requested measurements are in per-problem results/ directories"
