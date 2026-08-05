@@ -1,0 +1,142 @@
+Generating SQLite file ../../results/swiglu-submission-nsys.sqlite from ../../results/swiglu-submission-nsys.nsys-rep
+Processing [../../results/swiglu-submission-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/nvtx_sum.py]... 
+
+ ** NVTX Range Summary (nvtx_sum):
+
+ Time (%)  Total Time (ns)  Instances  Avg (ns)   Med (ns)   Min (ns)  Max (ns)  StdDev (ns)   Style           Range         
+ --------  ---------------  ---------  ---------  ---------  --------  --------  -----------  -------  ----------------------
+    100.0          7822321          1  7822321.0  7822321.0   7822321   7822321          0.0  PushPop  cuBLAS:cublasCreate_v2
+
+Processing [../../results/swiglu-submission-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/osrt_sum.py]... 
+
+ ** OS Runtime Summary (osrt_sum):
+
+ Time (%)  Total Time (ns)  Num Calls    Avg (ns)      Med (ns)     Min (ns)    Max (ns)   StdDev (ns)           Name         
+ --------  ---------------  ---------  ------------  ------------  ----------  ----------  -----------  ----------------------
+     52.1      10950588471        120    91254903.9   100122402.5        1584   237433941   32072209.6  poll                  
+     19.0       3999955138          1  3999955138.0  3999955138.0  3999955138  3999955138          0.0  pthread_cond_timedwait
+     15.1       3169858862         11   288168987.5   139496623.0       18587  1439236685  459999995.0  waitpid               
+     12.6       2654338047       2128     1247339.3        9367.0        1000   220136726    7099385.3  read                  
+      0.5         99055214       1368       72408.8       58163.0        1928    11442727     312452.8  open64                
+      0.2         41660613       1555       26791.4       26086.0        1029       75415       8865.6  close                 
+      0.2         36927738        566       65243.4        8034.0        1201    11682041     542526.4  ioctl                 
+      0.1         19885766        949       20954.4        3544.0        1080      265076      32615.6  open                  
+      0.0          7905100        228       34671.5        6033.5        1008      369997      66366.7  stat                  
+      0.0          6945618         51      136188.6        3652.0        1026     2222652     438506.1  fread                 
+      0.0          2815721         40       70393.0        3428.5        1359     2535972     399911.7  fopen                 
+      0.0          1681272        180        9340.4        3473.0        1021      840640      62836.7  mmap64                
+      0.0          1341794         64       20965.5        2748.5        1006      465217      73466.4  fopen64               
+      0.0          1076521        479        2247.4        1446.0        1180       27420       2041.9  munmap                
+      0.0           978291         17       57546.5       58636.0       24916       65028       8752.0  sleep                 
+      0.0           802530         10       80253.0       26360.0       19183      569369     171957.7  sem_timedwait         
+      0.0           460725        271        1700.1        1590.0        1003        9309        643.6  fstat                 
+      0.0           438711         25       17548.4        9496.0        2988      109495      21912.9  write                 
+      0.0           417738         40       10443.5        2109.0        1000       66839      15264.5  fclose                
+      0.0           363670          1      363670.0      363670.0      363670      363670          0.0  posix_spawn           
+      0.0           318458         64        4975.9        3704.0        1050       44113       5789.3  mmap                  
+      0.0           181080         20        9054.0        7283.5        1204       35847       7557.9  fgets                 
+      0.0           180545         19        9502.4        8467.0        2642       25816       6533.1  putc                  
+      0.0           164638         13       12664.5        7386.0        3140       51150      12995.1  pthread_cond_signal   
+      0.0           149512          3       49837.3       48955.0       44682       55875       5648.4  pthread_create        
+      0.0           134109         24        5587.9        3297.5        1044       18111       5111.0  fwrite                
+      0.0           116492          8       14561.5       15113.5        7745       20317       4512.5  fputs                 
+      0.0            98974         19        5209.2        4889.0        2353       15904       3099.2  pipe2                 
+      0.0            74179          1       74179.0       74179.0       74179       74179          0.0  pthread_cond_wait     
+      0.0            16344          2        8172.0        8172.0        6042       10302       3012.3  socket                
+      0.0            11281          8        1410.1        1306.5        1056        2054        374.9  sigaction             
+      0.0            11137          1       11137.0       11137.0       11137       11137          0.0  getc                  
+      0.0             9489          1        9489.0        9489.0        9489        9489          0.0  connect               
+      0.0             9387          2        4693.5        4693.5        2824        6563       2643.9  lstat                 
+      0.0             6549          4        1637.3        1503.0        1371        2172        363.3  signal                
+      0.0             6014          1        6014.0        6014.0        6014        6014          0.0  pthread_cond_broadcast
+      0.0             3554          3        1184.7        1235.0        1035        1284        131.9  fcntl                 
+      0.0             2783          2        1391.5        1391.5        1094        1689        420.7  fflush                
+      0.0             1516          1        1516.0        1516.0        1516        1516          0.0  bind                  
+      0.0             1330          1        1330.0        1330.0        1330        1330          0.0  dup2                  
+      0.0             1315          1        1315.0        1315.0        1315        1315          0.0  pthread_mutex_trylock 
+      0.0             1021          1        1021.0        1021.0        1021        1021          0.0  fileno_unlocked       
+
+Processing [../../results/swiglu-submission-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/cuda_api_sum.py]... 
+
+ ** CUDA API Summary (cuda_api_sum):
+
+ Time (%)  Total Time (ns)  Num Calls  Avg (ns)   Med (ns)   Min (ns)  Max (ns)  StdDev (ns)                   Name                  
+ --------  ---------------  ---------  ---------  ---------  --------  --------  -----------  ---------------------------------------
+     74.2         36132162          5  7226432.4  5613762.0   1090061  17500733    6120568.1  cuLibraryLoadData                      
+     10.6          5147310          2  2573655.0  2573655.0       915   5146395    3638403.8  cuKernelGetFunction                    
+      6.5          3146224          6   524370.7   410148.0       852   1355308     597791.2  cuLibraryGetKernel                     
+      2.7          1291759        880     1467.9      211.0       114   1071074      36098.6  cuGetProcAddress_v2                    
+      2.6          1263586         11   114871.5   102044.0      4595    239603      62071.8  cudaMalloc                             
+      2.2          1084350          7   154907.1    13244.0      5889   1011912     377923.4  cudaLaunchKernel                       
+      0.5           234422          2   117211.0   117211.0     11229    223193     149881.2  cudaDeviceSynchronize                  
+      0.4           179782          1   179782.0   179782.0    179782    179782          0.0  cuModuleLoadData                       
+      0.1            66402          1    66402.0    66402.0     66402     66402          0.0  cudaFree                               
+      0.1            64929          1    64929.0    64929.0     64929     64929          0.0  cuLaunchKernelEx                       
+      0.1            37093          2    18546.5    18546.5      9096     27997      13365.0  cuLaunchKernel                         
+      0.0            17312          8     2164.0     1440.5       624      5461       1773.9  cudaStreamIsCapturing_v10000           
+      0.0            14924         18      829.1      567.5       474      3262        724.9  cudaEventCreateWithFlags               
+      0.0            11752         14      839.4      447.0       314      4159       1022.5  cudaStreamGetCaptureInfo_v12030        
+      0.0            10499          4     2624.8     1603.5      1114      6178       2401.6  cuInit                                 
+      0.0             7982          3     2660.7      208.0       194      7580       4260.3  cuModuleGetLoadingMode                 
+      0.0             2871          3      957.0      569.0       486      1816        745.1  cudaGetDriverEntryPointByVersion_v12050
+      0.0             2835          7      405.0      358.0       246       716        164.1  cuKernelGetName                        
+      0.0             2176          2     1088.0     1088.0       467      1709        878.2  cudaGetDeviceProperties_v12000         
+
+Processing [../../results/swiglu-submission-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/cuda_gpu_kern_sum.py]... 
+
+ ** CUDA GPU Kernel Summary (cuda_gpu_kern_sum):
+
+ Time (%)  Total Time (ns)  Instances  Avg (ns)   Med (ns)   Min (ns)  Max (ns)  StdDev (ns)                                                  Name                                                
+ --------  ---------------  ---------  ---------  ---------  --------  --------  -----------  ----------------------------------------------------------------------------------------------------
+     85.5          4881597          2  2440798.5  2440798.5   2438959   2442638       2601.4  void cutlass::Kernel2<cutlass_80_tensorop_s1688gemm_128x256_32x3_nn_align4>(T1::Params)             
+      7.8           446164          1   446164.0   446164.0    446164    446164          0.0  _swiglu_kernel                                                                                      
+      6.7           379666          7    54238.0    49410.0      3456    174600      57318.3  void at::native::<unnamed>::distribution_elementwise_grid_stride_kernel<float, (int)4, void at::nat…
+
+Processing [../../results/swiglu-submission-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/cuda_gpu_mem_time_sum.py]... 
+SKIPPED: ../../results/swiglu-submission-nsys.sqlite does not contain GPU memory data.
+
+Processing [../../results/swiglu-submission-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/cuda_gpu_mem_size_sum.py]... 
+SKIPPED: ../../results/swiglu-submission-nsys.sqlite does not contain GPU memory data.
+
+Processing [../../results/swiglu-submission-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/openmp_sum.py]... 
+SKIPPED: ../../results/swiglu-submission-nsys.sqlite does not contain OpenMP event data.
+
+Processing [../../results/swiglu-submission-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/opengl_khr_range_sum.py]... 
+SKIPPED: ../../results/swiglu-submission-nsys.sqlite does not contain KHR Extension (KHR_DEBUG) data.
+
+Processing [../../results/swiglu-submission-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/opengl_khr_gpu_range_sum.py]... 
+SKIPPED: ../../results/swiglu-submission-nsys.sqlite does not contain GPU KHR Extension (KHR_DEBUG) data.
+
+Processing [../../results/swiglu-submission-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/vulkan_marker_sum.py]... 
+SKIPPED: ../../results/swiglu-submission-nsys.sqlite does not contain Vulkan Debug Extension (Vulkan Debug Util) data.
+
+Processing [../../results/swiglu-submission-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/vulkan_gpu_marker_sum.py]... 
+SKIPPED: ../../results/swiglu-submission-nsys.sqlite does not contain GPU Vulkan Debug Extension (GPU Vulkan Debug markers) data.
+
+Processing [../../results/swiglu-submission-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/dx11_pix_sum.py]... 
+SKIPPED: ../../results/swiglu-submission-nsys.sqlite does not contain DX11 CPU debug markers.
+
+Processing [../../results/swiglu-submission-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/dx12_gpu_marker_sum.py]... 
+SKIPPED: ../../results/swiglu-submission-nsys.sqlite does not contain DX12 GPU debug markers.
+
+Processing [../../results/swiglu-submission-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/dx12_pix_sum.py]... 
+SKIPPED: ../../results/swiglu-submission-nsys.sqlite does not contain DX12 CPU debug markers.
+
+Processing [../../results/swiglu-submission-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/wddm_queue_sum.py]... 
+SKIPPED: ../../results/swiglu-submission-nsys.sqlite does not contain WDDM context data.
+
+Processing [../../results/swiglu-submission-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/um_sum.py]... 
+SKIPPED: ../../results/swiglu-submission-nsys.sqlite does not contain CUDA memory transfers data.
+
+Processing [../../results/swiglu-submission-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/um_total_sum.py]... 
+SKIPPED: ../../results/swiglu-submission-nsys.sqlite does not contain CUDA memory transfers data.
+
+Processing [../../results/swiglu-submission-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/um_cpu_page_faults_sum.py]... 
+SKIPPED: ../../results/swiglu-submission-nsys.sqlite does not contain CUDA Unified Memory CPU page faults data.
+
+Processing [../../results/swiglu-submission-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/openacc_sum.py]... 
+SKIPPED: ../../results/swiglu-submission-nsys.sqlite does not contain OpenACC event data.
+
+Processing [../../results/swiglu-submission-nsys.sqlite] with [/usr/local/cuda-13.2/nsight-systems-2025.6.3/host-linux-x64/reports/syscall_sum.py]... 
+SKIPPED: ../../results/swiglu-submission-nsys.sqlite does not contain syscall data.
+
