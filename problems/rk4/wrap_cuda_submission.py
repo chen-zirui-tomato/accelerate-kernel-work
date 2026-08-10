@@ -67,12 +67,16 @@ except Exception as e:
 def custom_kernel(data: input_t) -> output_t:
     # RK4 assignment input_t: (u0, alpha, hx, hy, hz, n_steps)
     u0, alpha, hx, hy, hz, n_steps = data
+
+    def scalar(value):
+        return value.item() if isinstance(value, torch.Tensor) else value
+
     return cuda_module.custom_kernel(
         u0,
-        alpha,
-        hx,
-        hy,
-        hz,
+        scalar(alpha),
+        scalar(hx),
+        scalar(hy),
+        scalar(hz),
         n_steps,
     )
 '''

@@ -15,6 +15,7 @@ set -euo pipefail
 #   problems/swiglu/results/submission-test.txt
 #   problems/swiglu/results/submission-benchmark.txt
 #   problems/swiglu/results/submission-nsys-stats.txt
+#   problems/swiglu/results/submission-ncu.txt
 
 MODE="${1:-both}"
 PROBLEM_NAME=""
@@ -52,6 +53,8 @@ fi
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 RUNNER="${TMPDIR:-/tmp}/asst5_measure_runner.py"
+NCU="${NCU_PATH:-ncu}"
+NCU_SET="${NCU_SET:-full}"
 ALL_PROBLEMS=(
   "histogram"
   "rk4"
@@ -277,6 +280,18 @@ run_reference() {
     nsys stats --force-export=true "$results_dir/reference-nsys.nsys-rep" \
       | tee "$results_dir/reference-nsys-stats.txt"
   )
+
+  echo "==== $problem reference ncu ===="
+  (
+    cd "$ROOT/problems/$problem"
+    PYTHONPATH="$PWD:$PWD/.." "$NCU" \
+      --target-processes all \
+      --set "$NCU_SET" \
+      --force-overwrite \
+      --export "$results_dir/reference-ncu" \
+      python "$RUNNER" profile reference \
+      | tee "$results_dir/reference-ncu.txt"
+  )
 }
 
 run_submission() {
@@ -314,6 +329,18 @@ run_submission() {
 
     nsys stats --force-export=true "$results_dir/submission-nsys.nsys-rep" \
       | tee "$results_dir/submission-nsys-stats.txt"
+  )
+
+  echo "==== $problem submission ncu ===="
+  (
+    cd "$ROOT/problems/$problem"
+    PYTHONPATH="$PWD:$PWD/.." "$NCU" \
+      --target-processes all \
+      --set "$NCU_SET" \
+      --force-overwrite \
+      --export "$results_dir/submission-ncu" \
+      python "$RUNNER" profile submission \
+      | tee "$results_dir/submission-ncu.txt"
   )
 }
 
