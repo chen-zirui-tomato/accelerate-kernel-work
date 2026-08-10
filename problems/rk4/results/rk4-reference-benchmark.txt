@@ -1,4 +1,0 @@
-benchmark-count: 1
-benchmark.0.spec: grid_size: 600; n_steps: 10; seed: 9231
-benchmark.0: runs=3, mean=2,377.170 ms, std=0.036 ms, err=0.021 ms, best=2,377.132 ms, worst=2,377.205 ms
-check: pass

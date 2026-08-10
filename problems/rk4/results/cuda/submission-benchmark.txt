@@ -1,0 +1,5 @@
+ninja: no work to do.
+benchmark-count: 1
+benchmark.0.spec: grid_size: 600; n_steps: 10; seed: 9231
+benchmark.0: runs=3, mean=362.748 ms, std=0.069 ms, err=0.040 ms, best=362.668 ms, worst=362.793 ms
+check: pass
