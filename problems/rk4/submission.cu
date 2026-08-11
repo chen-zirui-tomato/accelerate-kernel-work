@@ -286,13 +286,6 @@ torch::Tensor custom_kernel(
     const float dt = 0.05f / (alpha * (inv_hx2 + inv_hy2 + inv_hz2));
 
     cudaStream_t stream = at::cuda::getCurrentCUDAStream().stream();
-    cudaGraph_t graph = nullptr;
-    cudaGraphExec_t graph_exec = nullptr;
-
-    cudaError_t err = cudaStreamBeginCapture(stream, cudaStreamCaptureModeGlobal);
-    if (err != cudaSuccess) {
-        throw std::runtime_error(cudaGetErrorString(err));
-    }
 
     for (int step = 0; step < n_steps; ++step) {
         lap_stage_cuda_kernel<<<interior_grid, block, 0, stream>>>(
@@ -318,27 +311,7 @@ torch::Tensor custom_kernel(
             Nx, Ny, Nz, dt);
     }
 
-    err = cudaStreamEndCapture(stream, &graph);
-    if (err != cudaSuccess) {
-        throw std::runtime_error(cudaGetErrorString(err));
-    }
-
-    err = cudaGraphInstantiate(&graph_exec, graph, nullptr, nullptr, 0);
-    if (err != cudaSuccess) {
-        cudaGraphDestroy(graph);
-        throw std::runtime_error(cudaGetErrorString(err));
-    }
-
-    err = cudaGraphLaunch(graph_exec, stream);
-    if (err != cudaSuccess) {
-        cudaGraphExecDestroy(graph_exec);
-        cudaGraphDestroy(graph);
-        throw std::runtime_error(cudaGetErrorString(err));
-    }
-
-    err = cudaStreamSynchronize(stream);
-    cudaGraphExecDestroy(graph_exec);
-    cudaGraphDestroy(graph);
+    cudaError_t err = cudaGetLastError();
     if (err != cudaSuccess) {
         throw std::runtime_error(cudaGetErrorString(err));
     }
