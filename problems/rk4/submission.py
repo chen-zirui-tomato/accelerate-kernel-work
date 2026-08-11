@@ -7,6 +7,7 @@ import io
 # CUDA source code loaded from submission.cu
 cuda_source = """
 #include <torch/extension.h>
+#include <ATen/cuda/CUDAContext.h>
 #include <cuda_runtime.h>
 
 #include <cstdint>
@@ -229,10 +230,9 @@ __global__ void lap_stage_cuda_kernel(
 }
 
 __global__ void combine_cuda_kernel(
-    const float* __restrict__ u,
+    float* __restrict__ u,
     const float* __restrict__ k1,
     const float* __restrict__ acc,
-    float* __restrict__ u_next,
     int Nx,
     int Ny,
     int Nz,
@@ -253,7 +253,7 @@ __global__ void combine_cuda_kernel(
     const int z = idx / (interior_X * interior_Y) + 4;
     const int offset = z * Ny * Nx + y * Nx + x;
 
-    u_next[offset] = u[offset] + (dt / 6.0f) *
+    u[offset] = u[offset] + (dt / 6.0f) *
         (acc[offset] + k1[offset]);
 }
 
@@ -280,7 +280,6 @@ torch::Tensor custom_kernel(
     TORCH_CHECK(u0.is_contiguous(), "u0 must be contiguous");
 
     torch::Tensor u = u0.clone();
-    torch::Tensor u_next = u0.clone();
     torch::Tensor k1 = torch::empty_like(u0);
     torch::Tensor k2 = torch::empty_like(u0);
     torch::Tensor acc = torch::empty_like(u0);
@@ -294,39 +293,63 @@ torch::Tensor custom_kernel(
     const float inv_hz2 = 1.0f / (hz * hz);
     const float dt = 0.05f / (alpha * (inv_hx2 + inv_hy2 + inv_hz2));
 
-    for (int step = 0; step < n_steps; ++step) {
-        lap_stage_cuda_kernel<<<interior_grid, block>>>(
-            u.data_ptr<float>(), nullptr, k1.data_ptr<float>(), Nx, Ny, Nz,
-            alpha, inv_hx2, inv_hy2, inv_hz2, 0.0f, acc.data_ptr<float>(), 0.0f);
+    cudaStream_t stream = at::cuda::getCurrentCUDAStream().stream();
+    cudaGraph_t graph = nullptr;
+    cudaGraphExec_t graph_exec = nullptr;
 
-        lap_stage_cuda_kernel<<<interior_grid, block>>>(
-            u.data_ptr<float>(), k1.data_ptr<float>(), k2.data_ptr<float>(), Nx, Ny, Nz,
-            alpha, inv_hx2, inv_hy2, inv_hz2, 0.5f * dt, acc.data_ptr<float>(), 2.0f);
-
-        lap_stage_cuda_kernel<<<interior_grid, block>>>(
-            u.data_ptr<float>(), k2.data_ptr<float>(), k1.data_ptr<float>(), Nx, Ny, Nz,
-            alpha, inv_hx2, inv_hy2, inv_hz2, 0.5f * dt, acc.data_ptr<float>(), 2.0f);
-
-        lap_stage_cuda_kernel<<<interior_grid, block>>>(
-            u.data_ptr<float>(), k1.data_ptr<float>(), k2.data_ptr<float>(), Nx, Ny, Nz,
-            alpha, inv_hx2, inv_hy2, inv_hz2, dt, nullptr, -1.0f);
-
-        combine_cuda_kernel<<<interior_grid, block>>>(
-            u.data_ptr<float>(),
-            k2.data_ptr<float>(),
-            acc.data_ptr<float>(),
-            u_next.data_ptr<float>(),
-            Nx, Ny, Nz, dt);
-
-        std::swap(u, u_next);
-    }
-
-    cudaError_t err = cudaGetLastError();
+    cudaError_t err = cudaStreamBeginCapture(stream, cudaStreamCaptureModeGlobal);
     if (err != cudaSuccess) {
         throw std::runtime_error(cudaGetErrorString(err));
     }
 
-    cudaDeviceSynchronize();
+    for (int step = 0; step < n_steps; ++step) {
+        lap_stage_cuda_kernel<<<interior_grid, block, 0, stream>>>(
+            u.data_ptr<float>(), nullptr, k1.data_ptr<float>(), Nx, Ny, Nz,
+            alpha, inv_hx2, inv_hy2, inv_hz2, 0.0f, acc.data_ptr<float>(), 0.0f);
+
+        lap_stage_cuda_kernel<<<interior_grid, block, 0, stream>>>(
+            u.data_ptr<float>(), k1.data_ptr<float>(), k2.data_ptr<float>(), Nx, Ny, Nz,
+            alpha, inv_hx2, inv_hy2, inv_hz2, 0.5f * dt, acc.data_ptr<float>(), 2.0f);
+
+        lap_stage_cuda_kernel<<<interior_grid, block, 0, stream>>>(
+            u.data_ptr<float>(), k2.data_ptr<float>(), k1.data_ptr<float>(), Nx, Ny, Nz,
+            alpha, inv_hx2, inv_hy2, inv_hz2, 0.5f * dt, acc.data_ptr<float>(), 2.0f);
+
+        lap_stage_cuda_kernel<<<interior_grid, block, 0, stream>>>(
+            u.data_ptr<float>(), k1.data_ptr<float>(), k2.data_ptr<float>(), Nx, Ny, Nz,
+            alpha, inv_hx2, inv_hy2, inv_hz2, dt, nullptr, -1.0f);
+
+        combine_cuda_kernel<<<interior_grid, block, 0, stream>>>(
+            u.data_ptr<float>(),
+            k2.data_ptr<float>(),
+            acc.data_ptr<float>(),
+            Nx, Ny, Nz, dt);
+    }
+
+    err = cudaStreamEndCapture(stream, &graph);
+    if (err != cudaSuccess) {
+        throw std::runtime_error(cudaGetErrorString(err));
+    }
+
+    err = cudaGraphInstantiate(&graph_exec, graph, nullptr, nullptr, 0);
+    if (err != cudaSuccess) {
+        cudaGraphDestroy(graph);
+        throw std::runtime_error(cudaGetErrorString(err));
+    }
+
+    err = cudaGraphLaunch(graph_exec, stream);
+    if (err != cudaSuccess) {
+        cudaGraphExecDestroy(graph_exec);
+        cudaGraphDestroy(graph);
+        throw std::runtime_error(cudaGetErrorString(err));
+    }
+
+    err = cudaStreamSynchronize(stream);
+    cudaGraphExecDestroy(graph_exec);
+    cudaGraphDestroy(graph);
+    if (err != cudaSuccess) {
+        throw std::runtime_error(cudaGetErrorString(err));
+    }
 
     return u;
 }
