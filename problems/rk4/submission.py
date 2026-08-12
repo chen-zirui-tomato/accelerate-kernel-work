@@ -321,13 +321,18 @@ __global__ void lap_stage_acc_cuda_kernel(
     acc[offset] += 2.0f * result;
 }
 
-__global__ void combine_cuda_kernel(
+__global__ void lap_stage_combine_cuda_kernel(
     float* __restrict__ u,
-    const float* __restrict__ k1,
+    const float* __restrict__ k,
     const float* __restrict__ acc,
     int Nx,
     int Ny,
     int Nz,
+    float alpha,
+    float inv_hx2,
+    float inv_hy2,
+    float inv_hz2,
+    float scale,
     float dt
 ) {
     const int interior_X = Nx - 8;
@@ -344,9 +349,12 @@ __global__ void combine_cuda_kernel(
     const int y = (idx / interior_X) % interior_Y + 4;
     const int z = idx / (interior_X * interior_Y) + 4;
     const int offset = z * Ny * Nx + y * Nx + x;
+    const float result = compute_stage_laplacian(
+        u, k, x, y, z, Nx, Ny, Nz,
+        alpha, inv_hx2, inv_hy2, inv_hz2, scale);
 
     u[offset] = u[offset] + (dt / 6.0f) *
-        (acc[offset] + k1[offset]);
+        (acc[offset] + result);
 }
 
 torch::Tensor custom_kernel(
@@ -371,7 +379,7 @@ torch::Tensor custom_kernel(
 
     TORCH_CHECK(u0.is_contiguous(), "u0 must be contiguous");
 
-    torch::Tensor u = u0.clone();
+    torch::Tensor u = torch::empty_like(u0);
     torch::Tensor k1 = torch::empty_like(u0);
     torch::Tensor k2 = torch::empty_like(u0);
     torch::Tensor acc = torch::empty_like(u0);
@@ -424,6 +432,13 @@ torch::Tensor custom_kernel(
         throw std::runtime_error(cudaGetErrorString(err));
     }
 
+    cudaMemcpyAsync(
+        u.data_ptr<float>(),
+        u0.data_ptr<float>(),
+        u0.numel() * sizeof(float),
+        cudaMemcpyDeviceToDevice,
+        stream);
+
     for (int step = 0; step < n_steps; ++step) {
         lap_u_cuda_kernel<<<interior_grid, block, 0, stream>>>(
             u.data_ptr<float>(), k1.data_ptr<float>(), acc.data_ptr<float>(),
@@ -437,15 +452,11 @@ torch::Tensor custom_kernel(
             u.data_ptr<float>(), k2.data_ptr<float>(), k1.data_ptr<float>(), acc.data_ptr<float>(),
             Nx, Ny, Nz, alpha, inv_hx2, inv_hy2, inv_hz2, 0.5f * dt);
 
-        lap_stage_no_acc_cuda_kernel<<<interior_grid, block, 0, stream>>>(
-            u.data_ptr<float>(), k1.data_ptr<float>(), k2.data_ptr<float>(), Nx, Ny, Nz,
-            alpha, inv_hx2, inv_hy2, inv_hz2, dt);
-
-        combine_cuda_kernel<<<interior_grid, block, 0, stream>>>(
+        lap_stage_combine_cuda_kernel<<<interior_grid, block, 0, stream>>>(
             u.data_ptr<float>(),
-            k2.data_ptr<float>(),
+            k1.data_ptr<float>(),
             acc.data_ptr<float>(),
-            Nx, Ny, Nz, dt);
+            Nx, Ny, Nz, alpha, inv_hx2, inv_hy2, inv_hz2, dt, dt);
     }
 
     err = cudaStreamEndCapture(stream, &graph);
