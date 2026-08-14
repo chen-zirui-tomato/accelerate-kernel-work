@@ -7,6 +7,8 @@ TEST_FILE="${TEST_FILE:-test_cases/test.txt}"
 RESULT_DIR="${RESULT_DIR:-results}"
 PYTHON_BIN="${PYTHON_BIN:-python3}"
 NSYS_BIN="${NSYS_BIN:-nsys}"
+NCU_BIN="${NCU_BIN:-ncu}"
+NCU_SET="${NCU_SET:-full}"
 
 mkdir -p "$RESULT_DIR"
 
@@ -92,14 +94,43 @@ run_ncu() {
     tmp_dir="$(mktemp -d)"
     local python_path
     python_path="$(target_python_path "$target" "$tmp_dir")"
+    local prefix="$RESULT_DIR/flashattention-${target}-ncu"
     local output_file="$RESULT_DIR/flashattention-${target}-ncu.txt"
+    local profile_log="$RESULT_DIR/flashattention-${target}-ncu-profile.txt"
     local status=0
+    local kernel_args=()
+
+    if [ "$target" = "submission" ]; then
+        kernel_args=(
+            --kernel-name-base demangled
+            --kernel-name 'regex:.*_flash_attention_kernel.*'
+        )
+    fi
 
     echo "==> ${target} ncu: ${TEST_FILE}"
     set +e
-    PYTHONPATH="$python_path" "$PYTHON_BIN" ../eval.py profile "$TEST_FILE" | tee "$output_file"
-    status="${PIPESTATUS[0]}"
+    PROFILE_TEST_FILE="$TEST_FILE" PYTHONPATH="$python_path" "$NCU_BIN" \
+        --target-processes all \
+        --set "$NCU_SET" \
+        --force-overwrite \
+        --export "$prefix" \
+        "${kernel_args[@]}" \
+        "$PYTHON_BIN" -c \
+        'import os, torch; from eval import get_test_cases; from reference import generate_input; from submission import custom_kernel; tests = get_test_cases(os.environ["PROFILE_TEST_FILE"], None); data = generate_input(**tests[-1].args); torch.cuda.synchronize(); custom_kernel(data); torch.cuda.synchronize()' \
+        > "$profile_log" 2>&1
+    status="$?"
     set -e
+
+    if [ "$status" -eq 0 ]; then
+        set +e
+        "$NCU_BIN" --import "${prefix}.ncu-rep" --page details | tee "$output_file"
+        status="${PIPESTATUS[0]}"
+        set -e
+    fi
+
+    if [ "$status" -ne 0 ]; then
+        echo "ncu failed; see $profile_log" >&2
+    fi
 
     rm -rf "$tmp_dir"
     return "$status"
