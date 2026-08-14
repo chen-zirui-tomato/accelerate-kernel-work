@@ -122,7 +122,7 @@ def custom_kernel(data: input_t) -> output_t:
         BLOCK_M=block_m,
         BLOCK_N=block_n,
         BLOCK_D=block_d,
-        num_warps=8,
-        num_stages=4,
+        num_warps=4,
+        num_stages=2,
     )
     return output

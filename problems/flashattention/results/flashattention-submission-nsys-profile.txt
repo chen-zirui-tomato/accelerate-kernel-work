@@ -4,7 +4,7 @@ Try the 'nsys status --environment' command to learn more.
 WARNING: CPU context switch tracing not supported, disabling.
 Try the 'nsys status --environment' command to learn more.
 
-Generating '/tmp/nsys-report-ddf5.qdstrm'
+Generating '/tmp/nsys-report-49ad.qdstrm'
 [1/1] [0%                          ] flashattention-submission-nsys.nsys-rep[1/1] [0%                          ] flashattention-submission-nsys.nsys-rep[1/1] [0%                          ] flashattention-submission-nsys.nsys-rep[1/1] [===23%                      ] flashattention-submission-nsys.nsys-rep[1/1] [=========46%                ] flashattention-submission-nsys.nsys-rep[1/1] [================68%         ] flashattention-submission-nsys.nsys-rep[1/1] [======================91%   ] flashattention-submission-nsys.nsys-rep[1/1] [========================99% ] flashattention-submission-nsys.nsys-rep[1/1] [========================100%] flashattention-submission-nsys.nsys-rep[1/1] [========================100%] flashattention-submission-nsys.nsys-rep
 Generated:
     /home/ubuntu/work/accelerate-kernel-work/problems/flashattention/results/flashattention-submission-nsys.nsys-rep
