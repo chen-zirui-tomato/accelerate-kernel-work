@@ -1,6 +1,5 @@
-import math
-
 import torch
+import torch.nn.functional as F
 
 from task import input_t, output_t
 from utils import make_match_reference
@@ -8,7 +7,7 @@ from utils import make_match_reference
 
 def ref_kernel(data: input_t) -> output_t:
     """
-    Reference implementation of Scaled Dot Product Attention.
+    PyTorch SDPA reference implementation.
     Attention(Q, K, V) = softmax(QK^T / sqrt(d)) V
 
     Args:
@@ -20,17 +19,7 @@ def ref_kernel(data: input_t) -> output_t:
         Output tensor of shape (batch_size, num_heads, seq_len, head_dim)
     """
     q, k, v = data
-    d_k = q.size(-1)
-
-    # 1. Scores
-    scores = torch.matmul(q, k.transpose(-2, -1)) / math.sqrt(d_k)
-
-    # 2. Softmax
-    attn_probs = torch.softmax(scores, dim=-1)
-
-    # 3. Output
-    output = torch.matmul(attn_probs, v)
-    return output
+    return F.scaled_dot_product_attention(q, k, v, is_causal=False)
 
 
 def generate_input(

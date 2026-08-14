@@ -13,7 +13,8 @@ cuda_source = """
 #include <cstdint>
 #include <utility>
 
-constexpr int kBlockSize = 256;
+constexpr int kBlockX = 32;
+constexpr int kBlockY = 8;
 
 __device__ __forceinline__ bool is_interior_point(
     int x,
@@ -71,16 +72,14 @@ __global__ void lap_u_cuda_kernel(
     const int interior_X = Nx - 8;
     const int interior_Y = Ny - 8;
     const int interior_Z = Nz - 8;
-    const int total = interior_X * interior_Y * interior_Z;
-
-    const int idx = blockIdx.x * blockDim.x + threadIdx.x;
-    if (idx >= total) {
+    const int y_block_count = (interior_Y + blockDim.y - 1) / blockDim.y;
+    const int x = blockIdx.x * blockDim.x + threadIdx.x + 4;
+    const int y_block = blockIdx.y % y_block_count;
+    const int z = blockIdx.y / y_block_count + 4;
+    const int y = y_block * blockDim.y + threadIdx.y + 4;
+    if (x >= Nx - 4 || y >= Ny - 4 || z >= Nz - 4) {
         return;
     }
-
-    const int x = idx % interior_X + 4;
-    const int y = (idx / interior_X) % interior_Y + 4;
-    const int z = idx / (interior_X * interior_Y) + 4;
 
     constexpr float c0 = -205.0f / 72.0f;
     constexpr float c1 =    8.0f /  5.0f;
@@ -268,16 +267,14 @@ __global__ void lap_stage_no_acc_cuda_kernel(
     const int interior_X = Nx - 8;
     const int interior_Y = Ny - 8;
     const int interior_Z = Nz - 8;
-    const int total = interior_X * interior_Y * interior_Z;
-
-    const int idx = blockIdx.x * blockDim.x + threadIdx.x;
-    if (idx >= total) {
+    const int y_block_count = (interior_Y + blockDim.y - 1) / blockDim.y;
+    const int x = blockIdx.x * blockDim.x + threadIdx.x + 4;
+    const int y_block = blockIdx.y % y_block_count;
+    const int z = blockIdx.y / y_block_count + 4;
+    const int y = y_block * blockDim.y + threadIdx.y + 4;
+    if (x >= Nx - 4 || y >= Ny - 4 || z >= Nz - 4) {
         return;
     }
-
-    const int x = idx % interior_X + 4;
-    const int y = (idx / interior_X) % interior_Y + 4;
-    const int z = idx / (interior_X * interior_Y) + 4;
     const int offset = z * Ny * Nx + y * Nx + x;
 
     out[offset] = compute_stage_laplacian(
@@ -302,16 +299,14 @@ __global__ void lap_stage_acc_cuda_kernel(
     const int interior_X = Nx - 8;
     const int interior_Y = Ny - 8;
     const int interior_Z = Nz - 8;
-    const int total = interior_X * interior_Y * interior_Z;
-
-    const int idx = blockIdx.x * blockDim.x + threadIdx.x;
-    if (idx >= total) {
+    const int y_block_count = (interior_Y + blockDim.y - 1) / blockDim.y;
+    const int x = blockIdx.x * blockDim.x + threadIdx.x + 4;
+    const int y_block = blockIdx.y % y_block_count;
+    const int z = blockIdx.y / y_block_count + 4;
+    const int y = y_block * blockDim.y + threadIdx.y + 4;
+    if (x >= Nx - 4 || y >= Ny - 4 || z >= Nz - 4) {
         return;
     }
-
-    const int x = idx % interior_X + 4;
-    const int y = (idx / interior_X) % interior_Y + 4;
-    const int z = idx / (interior_X * interior_Y) + 4;
     const int offset = z * Ny * Nx + y * Nx + x;
     const float result = compute_stage_laplacian(
         u, k, x, y, z, Nx, Ny, Nz,
@@ -321,40 +316,30 @@ __global__ void lap_stage_acc_cuda_kernel(
     acc[offset] += 2.0f * result;
 }
 
-__global__ void lap_stage_combine_cuda_kernel(
+__global__ void combine_cuda_kernel(
     float* __restrict__ u,
-    const float* __restrict__ k,
+    const float* __restrict__ k4,
     const float* __restrict__ acc,
     int Nx,
     int Ny,
     int Nz,
-    float alpha,
-    float inv_hx2,
-    float inv_hy2,
-    float inv_hz2,
-    float scale,
     float dt
 ) {
     const int interior_X = Nx - 8;
     const int interior_Y = Ny - 8;
     const int interior_Z = Nz - 8;
-    const int total = interior_X * interior_Y * interior_Z;
-
-    const int idx = blockIdx.x * blockDim.x + threadIdx.x;
-    if (idx >= total) {
+    const int y_block_count = (interior_Y + blockDim.y - 1) / blockDim.y;
+    const int x = blockIdx.x * blockDim.x + threadIdx.x + 4;
+    const int y_block = blockIdx.y % y_block_count;
+    const int z = blockIdx.y / y_block_count + 4;
+    const int y = y_block * blockDim.y + threadIdx.y + 4;
+    if (x >= Nx - 4 || y >= Ny - 4 || z >= Nz - 4) {
         return;
     }
-
-    const int x = idx % interior_X + 4;
-    const int y = (idx / interior_X) % interior_Y + 4;
-    const int z = idx / (interior_X * interior_Y) + 4;
     const int offset = z * Ny * Nx + y * Nx + x;
-    const float result = compute_stage_laplacian(
-        u, k, x, y, z, Nx, Ny, Nz,
-        alpha, inv_hx2, inv_hy2, inv_hz2, scale);
 
     u[offset] = u[offset] + (dt / 6.0f) *
-        (acc[offset] + result);
+        (acc[offset] + k4[offset]);
 }
 
 torch::Tensor custom_kernel(
@@ -384,9 +369,13 @@ torch::Tensor custom_kernel(
     torch::Tensor k2 = torch::empty_like(u0);
     torch::Tensor acc = torch::empty_like(u0);
 
-    const int interior_total = (Nx - 8) * (Ny - 8) * (Nz - 8);
-    const dim3 interior_grid((interior_total + kBlockSize - 1) / kBlockSize);
-    const dim3 block(kBlockSize);
+    const int interior_X = Nx - 8;
+    const int interior_Y = Ny - 8;
+    const int interior_Z = Nz - 8;
+    const dim3 block(kBlockX, kBlockY);
+    const dim3 interior_grid(
+        (interior_X + kBlockX - 1) / kBlockX,
+        ((interior_Y + kBlockY - 1) / kBlockY) * interior_Z);
 
     const float inv_hx2 = 1.0f / (hx * hx);
     const float inv_hy2 = 1.0f / (hy * hy);
@@ -452,11 +441,15 @@ torch::Tensor custom_kernel(
             u.data_ptr<float>(), k2.data_ptr<float>(), k1.data_ptr<float>(), acc.data_ptr<float>(),
             Nx, Ny, Nz, alpha, inv_hx2, inv_hy2, inv_hz2, 0.5f * dt);
 
-        lap_stage_combine_cuda_kernel<<<interior_grid, block, 0, stream>>>(
+        lap_stage_no_acc_cuda_kernel<<<interior_grid, block, 0, stream>>>(
+            u.data_ptr<float>(), k1.data_ptr<float>(), k2.data_ptr<float>(), Nx, Ny, Nz,
+            alpha, inv_hx2, inv_hy2, inv_hz2, dt);
+
+        combine_cuda_kernel<<<interior_grid, block, 0, stream>>>(
             u.data_ptr<float>(),
-            k1.data_ptr<float>(),
+            k2.data_ptr<float>(),
             acc.data_ptr<float>(),
-            Nx, Ny, Nz, alpha, inv_hx2, inv_hy2, inv_hz2, dt, dt);
+            Nx, Ny, Nz, dt);
     }
 
     err = cudaStreamEndCapture(stream, &graph);

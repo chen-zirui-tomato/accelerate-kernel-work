@@ -1,0 +1,132 @@
+ubuntu@10-60-72-11:~/work/accelerate-kernel-work/problems/rk4$ PYTHONPATH="$PWD:$PWD/.." nsys profile \
+  --trace=cuda,cublas,nvtx,osrt \
+  --cuda-graph-trace=node \
+  --stats=true \
+  --force-overwrite true \
+  -o results/cuda/submission-nsys-node \
+  python -c '
+import torch
+from reference import generate_input
+from submission import custom_kernel
+
+data = generate_input(grid_size=600, n_steps=10, seed=9231)
+torch.cuda.synchronize()
+
+output = custom_kernel(data)
+torch.cuda.synchronize()
+
+print(output.shape, output.dtype, output.device)
+'
+WARNING: CPU IP/backtrace sampling not supported, disabling.
+Try the 'nsys status --environment' command to learn more.
+
+WARNING: CPU context switch tracing not supported, disabling.
+Try the 'nsys status --environment' command to learn more.
+
+ninja: no work to do.
+torch.Size([600, 600, 600]) torch.float32 cuda:0
+Generating '/tmp/nsys-report-884f.qdstrm'
+[1/8] [========================100%] submission-nsys-node.nsys-rep
+[2/8] [========================100%] submission-nsys-node.sqlite
+[3/8] Executing 'nvtx_sum' stats report
+SKIPPED: No data available.
+[4/8] Executing 'osrt_sum' stats report
+
+ Time (%)  Total Time (ns)  Num Calls    Avg (ns)      Med (ns)    Min (ns)    Max (ns)    StdDev (ns)            Name         
+ --------  ---------------  ---------  ------------  ------------  ---------  -----------  ------------  ----------------------
+     87.3      904,170,958         20  45,208,547.9  19,330,338.0      1,467  202,839,277  57,489,969.5  poll                  
+      4.5       46,654,311        790      59,056.1       6,498.5        347   15,326,169     574,292.3  ioctl                 
+      2.6       27,256,006      2,682      10,162.6         745.0        256   10,523,089     261,151.3  read                  
+      2.2       23,212,161          3   7,737,387.0      48,148.0     35,944   23,128,069  13,328,723.0  waitpid               
+      0.9        9,440,041      7,359       1,282.8       1,103.0        431       13,355         763.1  stat64                
+      0.6        5,758,115      8,195         702.6         674.0        506        5,981         196.6  lstat64               
+      0.5        5,059,783          1   5,059,783.0   5,059,783.0  5,059,783    5,059,783           0.0  nanosleep             
+      0.4        3,746,565      1,385       2,705.1       2,405.0      1,105       25,580       1,405.2  open64                
+      0.3        2,912,628     67,577          43.1          42.0         28        9,169          61.8  pthread_cond_signal   
+      0.2        1,702,185         84      20,264.1       3,673.5      1,077      986,521     107,605.7  mmap64                
+      0.1        1,408,567      2,460         572.6         490.0        412       10,672         356.8  fstat64               
+      0.1        1,015,974         17      59,763.2      58,947.0     56,814       63,411       2,274.8  sleep                 
+      0.1          751,735     11,555          65.1          50.0         46       12,652         208.1  fread                 
+      0.1          549,860         11      49,987.3      44,669.0     27,186       95,220      21,388.0  sem_timedwait         
+      0.0          307,142        611         502.7          58.0         47       36,081       2,964.2  fgets                 
+      0.0          194,198         49       3,963.2       2,699.0        829       21,556       3,974.1  fopen                 
+      0.0          157,920      1,880          84.0          60.0         30        7,882         189.1  pthread_cond_broadcast
+      0.0          154,174         14      11,012.4       8,817.5        465       55,395      13,176.3  write                 
+      0.0          125,017         22       5,682.6       2,155.0        534       43,092       9,058.0  mmap                  
+      0.0           92,198          2      46,099.0      46,099.0     43,841       48,357       3,193.3  pthread_create        
+      0.0           82,180          1      82,180.0      82,180.0     82,180       82,180           0.0  pthread_cond_wait     
+      0.0           63,144         10       6,314.4       6,203.0      1,437        9,974       2,935.4  fopen64               
+      0.0           62,198         48       1,295.8         990.5        612        4,505         841.7  fclose                
+      0.0           52,111          1      52,111.0      52,111.0     52,111       52,111           0.0  fputc                 
+      0.0           43,480        263         165.3         144.0         29        1,324         125.4  sigaction             
+      0.0           33,736          8       4,217.0       4,620.5      1,773        6,595       1,582.2  pipe2                 
+      0.0           31,701         11       2,881.9       2,491.0      1,438        4,153       1,022.4  munmap                
+      0.0           29,694          9       3,299.3       3,783.0      1,243        5,058       1,397.3  open                  
+      0.0           23,001         76         302.6         251.5        138        1,053         172.5  fcntl                 
+      0.0           12,434          2       6,217.0       6,217.0      3,815        8,619       3,396.9  socket                
+      0.0            9,190          1       9,190.0       9,190.0      9,190        9,190           0.0  connect               
+      0.0            7,875          3       2,625.0       2,653.0      1,525        3,697       1,086.3  fwrite                
+      0.0            6,960         68         102.4          45.0         43        1,346         197.6  fflush                
+      0.0            4,714         64          73.7          37.0         35          386          72.2  pthread_mutex_trylock 
+      0.0            4,142         12         345.2         258.5        167        1,091         249.7  dup                   
+      0.0            2,896          3         965.3       1,069.0        551        1,276         373.5  dup2                  
+      0.0            2,691          9         299.0         186.0        169        1,206         340.4  signal                
+      0.0            2,357          2       1,178.5       1,178.5      1,025        1,332         217.1  stat                  
+      0.0            1,430          1       1,430.0       1,430.0      1,430        1,430           0.0  bind                  
+      0.0              944          1         944.0         944.0        944          944           0.0  listen                
+
+[5/8] Executing 'cuda_api_sum' stats report
+
+ Time (%)  Total Time (ns)  Num Calls    Avg (ns)       Med (ns)     Min (ns)   Max (ns)     StdDev (ns)                 Name               
+ --------  ---------------  ---------  -------------  -------------  --------  -----------  -------------  ---------------------------------
+     92.1      385,425,630          2  192,712,815.0  192,712,815.0   818,120  384,607,510  271,380,080.2  cudaDeviceSynchronize            
+      6.7       27,978,615         63      444,105.0        2,534.0     1,131   13,618,312    2,217,576.9  cudaLaunchKernel                 
+      0.6        2,631,323        128       20,557.2        1,888.0     1,420      902,906      112,512.4  cudaStreamCreateWithPriority     
+      0.2          860,447          1      860,447.0      860,447.0   860,447      860,447            0.0  cudaHostAlloc                    
+      0.2          858,104          6      143,017.3      134,065.5    99,809      220,255       41,654.2  cudaMalloc                       
+      0.1          271,035          1      271,035.0      271,035.0   271,035      271,035            0.0  cudaGraphInstantiate_v12000      
+      0.0          169,817          2       84,908.5       84,908.5    83,250       86,567        2,345.5  cudaGetDeviceProperties_v2_v12000
+      0.0          125,479          1      125,479.0      125,479.0   125,479      125,479            0.0  cudaGraphLaunch_v10000           
+      0.0           46,765          4       11,691.3       10,245.0    10,018       16,257        3,046.0  cudaStreamSynchronize            
+      0.0           40,125          5        8,025.0        4,030.0     2,790       22,537        8,350.6  cudaMemcpyAsync                  
+      0.0           30,859          1       30,859.0       30,859.0    30,859       30,859            0.0  cudaGraphExecDestroy_v10000      
+      0.0           19,573         16        1,223.3          697.0       314        7,687        1,795.8  cudaStreamIsCapturing_v10000     
+      0.0           12,153          1       12,153.0       12,153.0    12,153       12,153            0.0  cudaGraphDestroy_v10000          
+      0.0            7,437          2        3,718.5        3,718.5     2,535        4,902        1,673.7  cudaEventRecord                  
+      0.0            6,451          2        3,225.5        3,225.5       526        5,925        3,817.7  cudaEventCreateWithFlags         
+      0.0            5,490          2        2,745.0        2,745.0     2,072        3,418          951.8  cudaStreamWaitEvent              
+      0.0            2,767          1        2,767.0        2,767.0     2,767        2,767            0.0  cudaStreamEndCapture_v10000      
+      0.0            2,439          1        2,439.0        2,439.0     2,439        2,439            0.0  cudaStreamBeginCapture_v10000    
+      0.0            2,427          2        1,213.5        1,213.5       482        1,945        1,034.5  cudaEventDestroy                 
+      0.0            2,047          1        2,047.0        2,047.0     2,047        2,047            0.0  cuModuleGetLoadingMode           
+
+[6/8] Executing 'cuda_gpu_kern_sum' stats report
+
+ Time (%)  Total Time (ns)  Instances    Avg (ns)      Med (ns)     Min (ns)    Max (ns)   StdDev (ns)                                                  Name                                                
+ --------  ---------------  ---------  ------------  ------------  ----------  ----------  -----------  ----------------------------------------------------------------------------------------------------
+     61.1      235,125,258         20  11,756,262.9  12,230,302.0  10,994,652  12,246,237    605,208.4  lap_stage_acc_cuda_kernel(const float *, const float *, float *, float *, int, int, int, float, flo…
+     22.1       85,039,851         10   8,503,985.1   8,886,334.0   7,898,301   8,907,518    506,655.6  lap_stage_no_acc_cuda_kernel(const float *, const float *, float *, int, int, int, float, float, fl…
+      9.9       38,118,671         10   3,811,867.1   4,061,390.0   3,421,631   4,075,230    328,925.5  lap_u_cuda_kernel(const float *, float *, float *, int, int, int, float, float, float, float)       
+      6.5       25,172,628         10   2,517,262.8   2,541,486.5   2,368,382   2,655,391    142,258.9  combine_cuda_kernel(float *, const float *, const float *, int, int, int, float)                    
+      0.3        1,072,768          1   1,072,768.0   1,072,768.0   1,072,768   1,072,768          0.0  void at::native::<unnamed>::distribution_elementwise_grid_stride_kernel<float, (int)4, void at::nat…
+      0.0           10,591          4       2,647.8       2,560.0       2,528       2,943        199.1  void at::native::<unnamed>::distribution_elementwise_grid_stride_kernel<float, (int)4, void at::nat…
+      0.0            9,216          4       2,304.0       2,016.0       1,984       3,200        598.1  void at::native::vectorized_elementwise_kernel<(int)4, at::native::AUnaryFunctor<float, float, floa…
+      0.0            8,448          4       2,112.0       2,112.0       2,080       2,144         26.1  void at::native::vectorized_elementwise_kernel<(int)4, at::native::CUDAFunctorOnSelf_add<float>, st…
+
+[7/8] Executing 'cuda_gpu_mem_time_sum' stats report
+
+ Time (%)  Total Time (ns)  Count   Avg (ns)     Med (ns)    Min (ns)   Max (ns)   StdDev (ns)            Operation           
+ --------  ---------------  -----  -----------  -----------  ---------  ---------  -----------  ------------------------------
+     99.1        1,251,487      1  1,251,487.0  1,251,487.0  1,251,487  1,251,487          0.0  [CUDA memcpy Device-to-Device]
+      0.9           11,712      4      2,928.0      2,416.0      2,400      4,480      1,034.8  [CUDA memcpy Device-to-Host]  
+
+[8/8] Executing 'cuda_gpu_mem_size_sum' stats report
+
+ Total (MB)  Count  Avg (MB)  Med (MB)  Min (MB)  Max (MB)  StdDev (MB)            Operation           
+ ----------  -----  --------  --------  --------  --------  -----------  ------------------------------
+    864.000      1   864.000   864.000   864.000   864.000        0.000  [CUDA memcpy Device-to-Device]
+      0.000      4     0.000     0.000     0.000     0.000        0.000  [CUDA memcpy Device-to-Host]  
+
+Generated:
+    /home/ubuntu/work/accelerate-kernel-work/problems/rk4/results/cuda/submission-nsys-node.nsys-rep
+    /home/ubuntu/work/accelerate-kernel-work/problems/rk4/results/cuda/submission-nsys-node.sqlite
