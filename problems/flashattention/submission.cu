@@ -1,13 +1,3 @@
-import torch
-from task import input_t, output_t
-from torch.utils.cpp_extension import load_inline
-import sys
-import io
-
-# ------------------------------------------------------
-# 1. CUDA Source Code (Injected automatically)
-# ------------------------------------------------------
-cuda_source = """
 #include <cuda.h>
 #include <cuda_runtime.h>
 #include <torch/extension.h>
@@ -19,59 +9,6 @@ cuda_source = """
 #define WARPS_PER_BLOCK 8
 #define BLOCK_N 32
 #define LOG2E 1.4426950408889634f
-
-// warp_id = threadIdx.x / 32;
-// lane    = threadIdx.x % 32;
-// // 一个 warp 处理一个 query row
-// q_row = block_q_start + warp_id;
-// // 每个 lane 只加载 Q 的 4 个维度
-// q_frag[0] = Q[q_row, lane + 0  * 32];
-// q_frag[1] = Q[q_row, lane + 1  * 32];
-// q_frag[2] = Q[q_row, lane + 2  * 32];
-// q_frag[3] = Q[q_row, lane + 3  * 32];
-// float m = -inf;
-// float l = 0;
-// float acc_frag[4] = {0, 0, 0, 0};
-// for (kv_start = 0; kv_start < seq_len; kv_start += BLOCK_N) {
-//     // 全 block 合作把 K/V tile 搬到 shared memory
-//     load K[kv_start : kv_start + BLOCK_N, 0:128] to shared;
-//     load V[kv_start : kv_start + BLOCK_N, 0:128] to shared;
-//     __syncthreads();
-// for (j = 0; j < BLOCK_N; ++j) {
-//     // 每个 lane 算自己负责的 4 个维度的局部 dot
-//     float partial =
-//         q_frag[0] * K_s[j][lane + 0 * 32] +
-//         q_frag[1] * K_s[j][lane + 1 * 32] +
-//         q_frag[2] * K_s[j][lane + 2 * 32] +
-//         q_frag[3] * K_s[j][lane + 3 * 32];
-
-//     // warp 内 reduce，得到完整 score = dot(Q_i, K_j)
-//     float score = warp_sum(partial) * scale;
-
-//     // online softmax
-//     float m_new = max(m, score);
-//     float alpha = exp(m - m_new);
-//     float beta  = exp(score - m_new);
-
-//     // 更新 l
-//     l = l * alpha + beta;
-
-//     // 立刻用 beta 更新 acc，不保存 p[j]
-//     acc_frag[0] = acc_frag[0] * alpha + beta * V_s[j][lane + 0 * 32];
-//     acc_frag[1] = acc_frag[1] * alpha + beta * V_s[j][lane + 1 * 32];
-//     acc_frag[2] = acc_frag[2] * alpha + beta * V_s[j][lane + 2 * 32];
-//     acc_frag[3] = acc_frag[3] * alpha + beta * V_s[j][lane + 3 * 32];
-
-//     m = m_new;
-// }
-
-// __syncthreads();
-// }
-// // 写回 O
-// O[q_row, lane + 0 * 32] = acc_frag[0] / l;
-// O[q_row, lane + 1 * 32] = acc_frag[1] / l;
-// O[q_row, lane + 2 * 32] = acc_frag[2] / l;
-// O[q_row, lane + 3 * 32] = acc_frag[3] / l;
 
 __device__ __forceinline__ float warp_sum(float v) {
   unsigned mask = 0xffffffffu;
@@ -204,57 +141,3 @@ torch::Tensor flash_attention_forward(torch::Tensor Q, torch::Tensor K,
 
   return O;
 }
-
-"""
-
-# ------------------------------------------------------
-# 2. C++ Header Declaration
-# ------------------------------------------------------
-# This signature must match the C++ function in the .cu file
-cpp_source = """
-#include <torch/extension.h>
-torch::Tensor flash_attention_forward(torch::Tensor Q, torch::Tensor K, torch::Tensor V);
-"""
-
-# ------------------------------------------------------
-# 3. JIT Compilation
-# ------------------------------------------------------
-# Ensure stdout/stderr exist to prevent load_inline issues in some environments (e.g. Colab/Jupyter)
-if sys.stdout is None: sys.stdout = io.StringIO()
-if sys.stderr is None: sys.stderr = io.StringIO()
-
-# print("Compiling FlashAttention CUDA kernel... (This may take a moment)")
-
-cuda_module = load_inline(
-    name='flash_attention_cuda_placeholder_id',
-    cpp_sources=cpp_source,
-    cuda_sources=cuda_source,
-    functions=['flash_attention_forward'],
-    verbose=True,        # Print compilation log
-    # with_cuda=True,
-    # extra_cuda_cflags=["-O2"]
-)
-# print("Compilation complete.")
-
-# ------------------------------------------------------
-# 4. Python Wrapper
-# ------------------------------------------------------
-def custom_kernel(data: input_t) -> output_t:
-    """
-    Wrapper function to call the compiled CUDA kernel.
-
-    Args:
-        data: tuple of (Q, K, V)
-            Q: (batch_size, num_heads, seq_len, head_dim)
-            K: (batch_size, num_heads, seq_len, head_dim)
-            V: (batch_size, num_heads, seq_len, head_dim)
-    Returns:
-        Output tensor of shape (batch_size, num_heads, seq_len, head_dim)
-    """
-    q, k, v = data
-    # Ensure inputs are fp16 and on CUDA
-    q = q.half().cuda().contiguous()
-    k = k.half().cuda().contiguous()
-    v = v.half().cuda().contiguous()
-
-    return cuda_module.flash_attention_forward(q, k, v)

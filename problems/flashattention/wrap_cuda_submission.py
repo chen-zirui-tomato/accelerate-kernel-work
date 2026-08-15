@@ -79,9 +79,9 @@ def custom_kernel(data: input_t) -> output_t:
     """
     q, k, v = data
     # Ensure inputs are fp16 and on CUDA
-    q = q.half().cuda()
-    k = k.half().cuda()
-    v = v.half().cuda()
+    q = q.half().cuda().contiguous()
+    k = k.half().cuda().contiguous()
+    v = v.half().cuda().contiguous()
 
     return cuda_module.flash_attention_forward(q, k, v)
 
